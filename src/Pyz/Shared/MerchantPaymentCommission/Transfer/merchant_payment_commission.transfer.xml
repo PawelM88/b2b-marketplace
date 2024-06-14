@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<transfers xmlns="spryker:transfer-01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+
+    <transfer name="Merchant">
+        <property name="merchantPaymentCommission" type="MerchantPaymentCommission"/>
+    </transfer>
+
+    <transfer name="MerchantPaymentCommission">
+        <property name="merchantPaymentCommissionPerStore" type="array"/>
+        <property name="idMerchantPaymentCommission" type="int"/>
+        <property name="fkMerchant" type="int"/>
+        <property name="fkStore" type="int"/>
+        <property name="grPaymentCommissionKey" type="int"/>
+        <property name="grPaymentCommissionCapKey" type="int"/>
+        <property name="storeName" type="string"/>
+    </transfer>
+
+    <transfer name="MerchantPaymentCommissionPerStore">
+        <property name="merchantPaymentCommissionValues" type="MerchantPaymentCommissionValues"/>
+    </transfer>
+
+    <transfer name="MerchantPaymentCommissionValues">
+        <property name="idMerchantPaymentCommission" type="int"/>
+        <property name="fkMerchant" type="int"/>
+        <property name="fkStore" type="int"/>
+        <property name="grPaymentCommissionKey" type="int"/>
+        <property name="grPaymentCommissionCapKey" type="int"/>
+        <property name="storeName" type="string"/>
+    </transfer>
+
+</transfers>

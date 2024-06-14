@@ -7,6 +7,8 @@
 
 namespace Pyz\Zed\MerchantGui;
 
+use Pyz\Zed\MerchantPaymentCommissionGui\Communication\Plugin\MerchantGui\MerchantPaymentCommissionFormExpanderPlugin;
+use Pyz\Zed\MerchantPaymentCommissionGui\Communication\Plugin\MerchantGui\Tab\MerchantPaymentCommissionFormTabExpanderPlugin;
 use Spryker\Zed\Kernel\Communication\Form\FormTypeInterface;
 use Spryker\Zed\MerchantGui\MerchantGuiDependencyProvider as SprykerMerchantGuiDependencyProvider;
 use Spryker\Zed\MerchantProfileGui\Communication\Plugin\MerchantGui\MerchantProfileFormExpanderPlugin;
@@ -35,6 +37,7 @@ class MerchantGuiDependencyProvider extends SprykerMerchantGuiDependencyProvider
     protected function getMerchantFormExpanderPlugins(): array
     {
         return [
+            new MerchantPaymentCommissionFormExpanderPlugin(), // #featureMerchantPaymentCommissionGui
             new MerchantProfileFormExpanderPlugin(),
             new MerchantStockMerchantFormExpanderPlugin(),
             new IsOpenForRelationRequestMerchantFormExpanderPlugin(),
@@ -47,6 +50,7 @@ class MerchantGuiDependencyProvider extends SprykerMerchantGuiDependencyProvider
     protected function getMerchantFormTabsExpanderPlugins(): array
     {
         return [
+            new MerchantPaymentCommissionFormTabExpanderPlugin(), // #featureMerchantPaymentCommissionGui
             new MerchantProfileContactPersonFormTabExpanderPlugin(),
             new MerchantProfileFormTabExpanderPlugin(),
             new MerchantProfileLegalInformationFormTabExpanderPlugin(),

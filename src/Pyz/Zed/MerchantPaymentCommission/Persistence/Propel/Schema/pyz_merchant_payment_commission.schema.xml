@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<database xmlns="spryker:schema-01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="zed" xsi:schemaLocation="spryker:schema-01 https://static.spryker.com/schema-01.xsd" namespace="Orm\Zed\MerchantPaymentCommission\Persistence" package="src.Orm.Zed.MerchantPaymentCommission.Persistence">
+
+    <table name="pyz_merchant_payment_commission" identifierQuoting="true" phpName="PyzMerchantPaymentCommission">
+        <column name="id_merchant_payment_commission" type="integer" autoIncrement="true" primaryKey="true"/>
+        <column name="fk_merchant" type="integer" required="true"/>
+        <column name="fk_store" type="integer" required="true"/>
+        <column name="gr_payment_commission_key" type="INTEGER" />
+        <column name="gr_payment_commission_cap_key" type="INTEGER" />
+
+        <foreign-key foreignTable="spy_merchant" onDelete="CASCADE">
+            <reference local="fk_merchant" foreign="id_merchant"/>
+        </foreign-key>
+
+        <foreign-key foreignTable="spy_store" onDelete="CASCADE">
+            <reference local="fk_store" foreign="id_store"/>
+        </foreign-key>
+
+        <behavior name="timestampable"/>
+    </table>
+
+</database>

@@ -7,6 +7,9 @@
 
 namespace Pyz\Zed\Merchant;
 
+use Pyz\Zed\MerchantPaymentCommission\Communication\Plugin\Merchant\MerchantPaymentCommissionExpanderPlugin;
+use Pyz\Zed\MerchantPaymentCommission\Communication\Plugin\Merchant\MerchantPaymentCommissionMerchantPostUpdatePlugin;
+use Pyz\Zed\MerchantPaymentCommission\Communication\Plugin\Merchant\MerchantPaymentCommissionPostCreatePlugin;
 use Spryker\Zed\AclMerchantPortal\Communication\Plugin\Merchant\MerchantAclEntitiesMerchantPostCreatePlugin;
 use Spryker\Zed\Merchant\MerchantDependencyProvider as SprykerMerchantDependencyProvider;
 use Spryker\Zed\MerchantCategory\Communication\Plugin\Merchant\MerchantCategoryMerchantBulkExpanderPlugin;
@@ -25,6 +28,7 @@ class MerchantDependencyProvider extends SprykerMerchantDependencyProvider
     protected function getMerchantPostCreatePlugins(): array
     {
         return [
+            new MerchantPaymentCommissionPostCreatePlugin(), // #featureMerchantPaymentCommission
             new MerchantProfileMerchantPostCreatePlugin(),
             new MerchantStockMerchantPostCreatePlugin(),
             new MerchantAclEntitiesMerchantPostCreatePlugin(),
@@ -37,6 +41,7 @@ class MerchantDependencyProvider extends SprykerMerchantDependencyProvider
     protected function getMerchantPostUpdatePlugins(): array
     {
         return [
+            new MerchantPaymentCommissionMerchantPostUpdatePlugin(), // #featureMerchantPaymentCommission
             new MerchantProfileMerchantPostUpdatePlugin(),
             new SyncMerchantUsersStatusMerchantPostUpdatePlugin(),
         ];
@@ -48,6 +53,7 @@ class MerchantDependencyProvider extends SprykerMerchantDependencyProvider
     protected function getMerchantBulkExpanderPlugins(): array
     {
         return [
+            new MerchantPaymentCommissionExpanderPlugin(), // #featureMerchantPaymentCommission
             new MerchantProfileMerchantBulkExpanderPlugin(),
             new MerchantStockMerchantBulkExpanderPlugin(),
             new MerchantCategoryMerchantBulkExpanderPlugin(),

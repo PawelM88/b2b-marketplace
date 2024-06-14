@@ -1,0 +1,10 @@
+{{ form_row(merchantForm.merchantPaymentCommission.gr_payment_commission_key) }}
+{{ form_row(merchantForm.merchantPaymentCommission.gr_payment_commission_cap_key) }}
+
+{% for merchantPaymentCommissionPerStore in merchantForm.merchantPaymentCommission.merchantPaymentCommissionPerStore %}
+	{% block content %}
+		{{ 'Store: ' ~ merchantPaymentCommissionPerStore.merchantPaymentCommissionValues.vars.value.storeName }}
+		{{ form_row(merchantPaymentCommissionPerStore.merchantPaymentCommissionValues.grPaymentCommissionKey) }}
+		{{ form_row(merchantPaymentCommissionPerStore.merchantPaymentCommissionValues.grPaymentCommissionCapKey) }}
+	{% endblock %}
+{% endfor %}
