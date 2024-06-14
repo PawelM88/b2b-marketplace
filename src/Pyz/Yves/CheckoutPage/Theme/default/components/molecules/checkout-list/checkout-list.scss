@@ -1,0 +1,26 @@
+/* stylelint-disable */
+
+@mixin checkout-page-checkout-list($name: '.checkout-list') {
+    #{$name} {
+        margin-bottom: rem(20);
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        &__item {
+            display: block;
+            position: relative;
+        }
+
+        &__content {
+            margin-top: rem(-8);
+            padding: 0 rem(30) rem(22) rem(64);
+            position: relative;
+        }
+
+        @content;
+    }
+}
+
+@include checkout-page-checkout-list();

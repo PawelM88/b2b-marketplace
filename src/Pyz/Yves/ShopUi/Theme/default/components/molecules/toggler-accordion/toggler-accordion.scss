@@ -1,0 +1,34 @@
+@mixin shop-ui-toggler-accordion($name: '.toggler-accordion') {
+    #{$name} {
+        &__icon {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        &__item {
+            position: relative;
+            cursor: pointer;
+            padding-right: 1rem;
+
+            &--active {
+                #{$name}__icon {
+                    transform: rotate(180deg) translateY(50%);
+
+                    &::after {
+                        display: none;
+                    }
+                }
+
+                &::after {
+                    display: none;
+                }
+            }
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-toggler-accordion();

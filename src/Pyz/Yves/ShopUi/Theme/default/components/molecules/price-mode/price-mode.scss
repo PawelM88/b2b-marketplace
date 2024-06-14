@@ -1,0 +1,43 @@
+@mixin shop-ui-price-mode($name: '.price-mode') {
+    #{$name} {
+        color: $setting-color-gray-2;
+        letter-spacing: rem(0.2);
+
+        &--small {
+            font-size: rem(12);
+            letter-spacing: rem(0.1);
+        }
+
+        &--secondary {
+            color: $setting-color-gray-4;
+        }
+
+        &--mobile-small {
+            font-size: rem(14);
+
+            @include helper-breakpoint-media-min($lg) {
+                font-size: rem(16);
+            }
+        }
+
+        &__icon {
+            margin-right: rem(8);
+
+            &--small {
+                margin-right: rem(4);
+            }
+
+            &--mobile-small {
+                margin-right: rem(4);
+
+                @include helper-breakpoint-media-min($lg) {
+                    margin-right: rem(8);
+                }
+            }
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-price-mode();

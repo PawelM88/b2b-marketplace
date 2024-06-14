@@ -1,0 +1,55 @@
+{% extends view('role-delete', '@SprykerShop:CompanyPage') %}
+
+{% block breadcrumbs %}
+    {% include molecule('breadcrumb') with {
+        data: {
+            steps: [
+                {
+                    label: 'company.account.page-title' | trans,
+                    url: url('company/overview')
+                }, {
+                    label: 'company.account.company_role' | trans,
+                    url: url('company/company-role')
+                }, {
+                    label: 'company.account.company_role.delete' | trans,
+                },
+            ],
+        },
+    } only %}
+{% endblock %}
+
+{% block companyContent %}
+    {% include molecule('action-bar', 'ShopUi') with {
+        data: {
+            title: 'company.account.company_role.delete.confirmation.warning' | trans,
+        },
+    } only %}
+    {{ "company.account.company_role.delete.confirmation.trying_to_delete" | trans }}: <strong>{{ data.roleName }}</strong><br>
+
+    {% if data.assignedUsers is empty %}
+        {{ "company.account.company_role.delete.confirmation.deletion_warning" | trans }}<br><br>
+    {% else %}
+        {{ "company.account.company_role.delete.confirmation.assigned_users_message" | trans }}
+        <p>{{ "company.account.company_role.delete.confirmation.assigned_users" | trans }}:</p>
+        <ul class="list list--bullet">
+            {% for user in data.assignedUsers %}
+                <li class="list__item">{{ user.customer.firstName }} {{ user.customer.lastName }}</li>
+            {% endfor %}
+        </ul><br>
+    {% endif %}
+
+    <div class="grid">
+        <div class="col">
+            <a href="{{ url('company/company-role') }}" class="button button--hollow">
+                {{ "company.account.company_role.delete.back" | trans }}
+            </a>
+        </div>
+        {% if data.assignedUsers is empty %}
+            <div class="col spacing-left spacing-left--inner">
+                {{ form_start(data.companyRoleDeleteForm, {'action': url('company/company-role/delete')}) }}
+                    <button data-init-single-click class="button button--alert">{{ 'company.account.company_role.delete' | trans }}</button>
+                {{ form_end(data.companyRoleDeleteForm) }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

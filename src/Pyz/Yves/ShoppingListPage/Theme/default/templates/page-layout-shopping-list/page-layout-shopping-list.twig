@@ -1,0 +1,20 @@
+{% extends template('page-layout-shopping-list', '@SprykerShop:ShoppingListPage') %}
+
+{% define data = {
+    backUrl: app.request.headers.get('referer') | default(url('shopping-list')),
+} %}
+
+{% block title %}{% endblock %}
+
+{% block breadcrumbs %}
+    {% include molecule('breadcrumb') with {
+        data: {
+            steps: [{
+                label: 'customer.account' | trans,
+            },
+            {
+                label: data.title,
+            }],
+        },
+    } only %}
+{% endblock %}

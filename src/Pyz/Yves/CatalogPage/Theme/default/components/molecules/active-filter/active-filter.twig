@@ -1,0 +1,13 @@
+{% extends molecule('active-filter', '@SprykerShop:CatalogPage') %}
+
+{% block body %}
+    <strong class="{{ config.name ~ '__name' }}">{{ ('product.filter.' ~ data.filter.name) | trans }}:&nbsp;</strong>
+    {{ data.value }}
+    {% include atom('icon') with {
+        class: config.name ~ '__icon',
+        modifiers: ['cross'],
+        data: {
+            name: 'cross',
+        },
+    } only %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends molecule('card', '@SprykerShop:ShopUi') %}
+{% import _self as component %}
+
+{% block body %}
+    <div class="{{ component.renderClass(config.name ~ '__container', modifiers) }}">
+        {% block image %}
+            {{ parent() }}
+        {% endblock %}
+
+        {% block content %}
+            {{ parent() }}
+        {% endblock %}
+
+        {% block actionsContainer %}
+            <div class="{{ component.renderClass(config.name ~ '__actions-container', modifiers) }}">
+                {% block actions %}
+                    {{ parent() }}
+                {% endblock %}
+            </div>
+        {% endblock %}
+    </div>
+{% endblock %}

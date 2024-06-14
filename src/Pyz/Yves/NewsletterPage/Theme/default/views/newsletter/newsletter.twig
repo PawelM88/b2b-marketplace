@@ -1,0 +1,30 @@
+{% extends template('page-layout-customer', 'CustomerPage') %}
+
+{% define data = {
+    form: _view.form,
+    activePage: 'newsletter',
+    title: 'customer.account.newsletter' | trans
+} %}
+
+{% block customerContent %}
+    {% include molecule('action-bar') with {
+        modifiers: ['first', 'middle'],
+        data: {
+            title: 'customer.account.newsletter' | trans,
+        }
+    } only %}
+
+    <div class="box">
+        <h4>{{ 'customer.newsletter.subscription' | trans }}</h4>
+        <p class="text-small">{{ 'customer.newsletter.text' | trans }}</p>
+
+        {% include molecule('form') with {
+            data: {
+                form: data.form,
+                submit: {
+                    enable: true
+                }
+            }
+        } only %}
+    </div>
+{% endblock %}

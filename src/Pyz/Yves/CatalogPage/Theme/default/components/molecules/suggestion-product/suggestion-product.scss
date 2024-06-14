@@ -1,0 +1,82 @@
+@mixin catalog-page-suggestion-product($name: '.suggestion-product') {
+    #{$name} {
+        padding-bottom: rem(10);
+
+        &__title {
+            font-size: rem(17);
+            font-weight: fw(regular);
+            line-height: normal;
+            letter-spacing: rem(0.2);
+            padding-bottom: rem(16);
+            padding-top: rem(26);
+            color: $setting-color-gray-4;
+        }
+
+        &__link {
+            @include helper-effect-transition(color);
+            display: flex;
+            align-items: center;
+            color: $setting-color-gray-4;
+
+            &:hover {
+                color: $setting-color-gray-3;
+            }
+        }
+
+        &__thumbnail {
+            min-width: rem(52);
+            width: rem(52);
+
+            @include helper-breakpoint-media-min($lg) {
+                min-width: rem(42);
+                width: rem(42);
+            }
+        }
+
+        &__name {
+            flex-grow: 1;
+            padding-left: rem(14);
+            font-size: rem(12);
+            font-weight: fw(medium);
+            line-height: rem(14);
+            letter-spacing: rem(0.1);
+
+            @include helper-breakpoint-media-min($lg) {
+                font-size: rem(13);
+            }
+        }
+
+        &__price {
+            display: block;
+            padding-top: 3px;
+
+            .price__amount {
+                color: $setting-color-gray-3;
+                font-size: rem(13);
+                font-weight: fw(bold);
+
+                &--alt {
+                    color: $setting-color-alt;
+                }
+
+                &--original {
+                    font-size: rem(13);
+                    font-weight: fw(regular);
+                    text-decoration: line-through;
+                }
+            }
+
+            .price__mode {
+                display: none;
+
+                @include helper-breakpoint-media-min($lg) {
+                    display: block;
+                }
+            }
+        }
+
+        @content;
+    }
+}
+
+@include catalog-page-suggestion-product();

@@ -1,0 +1,40 @@
+{% extends view('quote-request-details', '@SprykerShop:QuoteRequestPage') %}
+
+{% block contentClass %}page-layout-main--request-for-quote{% endblock %}
+
+{% block orderInformationBoxWrapper %}
+    <div class="col col--sm-12 col--xl-6 spacing-x spacing-x--big spacing-bottom spacing-bottom--big spacing-x--inner">
+        {{ block('orderInformationBoxInner') }}
+    </div>
+{% endblock %}
+
+{% block separator %}{% endblock %}
+
+{% block actions %}
+    {% set buttonBackClass = 'spacing-bottom button button--expand button--hollow button--second' %}
+    {% set buttonCancelClass = 'spacing-bottom button button--expand button--hollow button--alert' %}
+    {% set buttonReviseClass = 'spacing-bottom button button--expand button--hollow' %}
+    {% set buttonConvertToCartClass = 'spacing-bottom button button--expand button--success' %}
+    {% set buttonEditClass = 'spacing-bottom button button--expand button--hollow' %}
+    {% set buttonSendToAgentClass = 'spacing-bottom button button--expand button--success' %}
+
+    {{ block('actionBack') }}
+
+    {% if data.version and data.version.idQuoteRequestVersion == data.quoteRequest.latestVisibleVersion.idQuoteRequestVersion %}
+        {% if data.isQuoteRequestCancelable %}
+            {{ block('actionCancel') }}
+        {% endif %}
+
+        {% if data.isQuoteRequestReady %}
+            {{ block('actionRevise') }}
+
+            {{ block('actionConvertToCart') }}
+        {% endif %}
+
+        {% if data.isQuoteRequestEditable %}
+            {{ block('actionEdit') }}
+
+            {{ block('actionSendToAgent') }}
+        {% endif %}
+    {% endif %}
+{% endblock %}

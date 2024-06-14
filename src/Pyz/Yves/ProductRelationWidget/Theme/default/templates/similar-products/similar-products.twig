@@ -1,0 +1,52 @@
+{% extends template('widget') %}
+
+{% define data = {
+    products: []
+} %}
+
+{% block body %}
+    {% if data.products is not empty %}
+
+        {% embed molecule('slick-carousel') with {
+            modifiers: ['full-width', 'equal-height', 'products'],
+            data: {
+                slides: data.products
+            },
+            attributes: {
+                'slider-config': '{
+                    "slidesToShow": 4,
+                    "dots": false,
+                    "arrows": true,
+                    "adaptiveHeight": true,
+                    "responsive": [{
+                        "breakpoint": 1024,
+                        "settings": {
+                            "slidesToShow": 3
+                        }
+                    },
+                    {
+                        "breakpoint": 768,
+                        "settings": {
+                            "slidesToShow": 2
+                        }
+                    },
+                    {
+                        "breakpoint": 375,
+                        "settings": {
+                            "slidesToShow": 1
+                        }
+                    }]
+                }'
+            }
+        } only %}
+
+            {% block slides %}
+                {% for slide in data.slides %}
+                    {% widget 'PdpProductRelationWidget' args [slide] only %}{% endwidget %}
+                {% endfor %}
+            {% endblock %}
+
+        {% endembed %}
+
+    {% endif %}
+{% endblock %}

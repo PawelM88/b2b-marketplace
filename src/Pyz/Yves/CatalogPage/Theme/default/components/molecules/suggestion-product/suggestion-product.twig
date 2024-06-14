@@ -1,0 +1,28 @@
+{% extends molecule('suggestion-product', '@SprykerShop:CatalogPage') %}
+
+{% block body %}
+    <a class="js-suggest-search__item--navigable js-suggest-search__product-item--navigable {{ config.name }}__link" href="{{ data.url }}">
+        {% if data.image %}
+            {% block image %}
+                {% set imageClasses = config.name ~ '__thumbnail' %}
+                {% set imageModifiers = ['thumbnail', 'smaller', 'spaceless', 'with-overlay'] %}
+
+                {{ parent() }}
+            {% endblock %}
+        {% endif %}
+
+        <span class="{{ config.name }}__name">
+            {{ data.title }}
+
+            {% if can('SeePricePermissionPlugin') %}
+                {% include molecule('money-price') with {
+                    class: config.name ~ '__price',
+                    data: {
+                        amount: data.price,
+                        originalAmount: data.originalPrice ?? null,
+                    },
+                } only %}
+            {% endif %}
+        </span>
+    </a>
+{% endblock %}

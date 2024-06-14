@@ -1,0 +1,20 @@
+{% extends template('widget') %}
+
+{% define data = {
+    idQuote: _view.cart.idQuote,
+    form: _widget.cartNoteForm,
+    isTitleVisible: true,
+} %}
+
+{% set canWrite = not is_granted('ROLE_USER') or not data.idQuote or can('WriteSharedCartPermissionPlugin', data.idQuote) %}
+
+{% block body %}
+
+    {% include molecule('cart-item-note', 'CartNoteWidget') with {
+        data: {
+            form: data.form,
+            canWrite: canWrite,
+            isTitleVisible: data.isTitleVisible,
+        },
+    } only %}
+{% endblock %}

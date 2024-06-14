@@ -1,0 +1,14 @@
+{% extends view('shopping-list-overview-delete', '@SprykerShop:ShoppingListPage') %}
+
+{% block customerContent %}
+    {% include molecule('shopping-list-message', 'ShoppingListPage') with {
+        data: {
+            title: data.title,
+            backUrl: data.backUrl,
+            idShoppingList: data.shoppingList.idShoppingList,
+            sharedCompanyUsers: data.sharedCompanyUsers,
+            sharedCompanyBusinessUnits: data.sharedCompanyBusinessUnits,
+            shoppingListDeleteForm: data.shoppingListDeleteForm,
+        },
+    } only %}
+{% endblock %}

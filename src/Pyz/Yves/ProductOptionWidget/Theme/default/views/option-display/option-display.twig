@@ -1,0 +1,11 @@
+{% extends view('option-display', '@SprykerShop:ProductOptionWidget') %}
+
+{% block body %}
+    <ul class="option-display">
+         {% for option in data.options %}
+            <li class="option-display__item">
+                {{ option.value | trans }} - {{ option.unitPrice | money }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

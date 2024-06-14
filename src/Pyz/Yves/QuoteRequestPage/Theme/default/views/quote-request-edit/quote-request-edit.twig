@@ -1,0 +1,35 @@
+{% extends view('quote-request-edit', '@SprykerShop:QuoteRequestPage') %}
+
+{% block contentClass %}page-layout-main--request-for-quote{% endblock %}
+
+{% block separator %}{% endblock %}
+
+{% block orderInformationBoxInner %}
+    {% include molecule('quote-request-form-field', 'QuoteRequestPage') ignore missing with {
+        data: {
+            field: child,
+        },
+    } only %}
+{% endblock %}
+
+{% block actions %}
+    {% block actionBack %}
+        {% set buttonBackClass = 'spacing-bottom button button--expand button--hollow button--second' %}
+        {{ parent() }}
+    {% endblock %}
+
+    {% block actionEditItems %}
+        {% set buttonEditItemsClass = 'spacing-bottom button button--expand button--hollow' %}
+        {{ parent() }}
+    {% endblock %}
+
+    {% block actionSave %}
+        {% set buttonSaveClass = 'spacing-bottom button button--expand button--hollow' %}
+        {{ parent() }}
+    {% endblock %}
+
+    {% block actionSend %}
+        {% set buttonSendClass = 'spacing-bottom button button--expand button--success' %}
+        {{ parent() }}
+    {% endblock %}
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends molecule('packaging-unit-cart', '@SprykerShop:ProductPackagingUnitWidget') %}
+
+{% define data = {
+    quantitySalesUnit: required,
+    amountSalesUnit: required,
+    hasSubQuantity: false,
+    hasAmountPerQuantity: false,
+} %}
+
+{% block body %}
+    {% set amountPerQuantity = data.amount.divide(data.quantity, data.countOfDecimalsInAmount).trim %}
+    {% set salesUnitName = data.quantitySalesUnit.productMeasurementUnit.name | default %}
+    {% set quantitySalesUnit = data.hasSubQuantity and salesUnitName is not empty and data.amount is empty %}
+
+    {% if data.quantity is not empty %}
+        <li class="spacing-top">
+            {{ 'packaging_units.cart.quantity' | trans }}: {{ data.quantity | executeFilterIfExists('formatInt', app.locale) }}
+
+            {% if quantitySalesUnit %}
+                {% include atom('quantity-option') with {
+                    class: 'spacing-left',
+                    data: {
+                        value: data.quantity,
+                        precision: data.quantitySalesUnit.conversion,
+                        optionName: salesUnitName | trans,
+                    },
+                } only %}
+            {% endif %}
+
+            {% if data.hasSubQuantity and data.amount is not empty %}
+                {% set amountSalesUnitName = data.amountSalesUnit.productMeasurementUnit.name | default %}
+
+                {% embed atom('quantity-option') with {
+                    class: 'spacing-left',
+                    data: {
+                        value: data.amount,
+                        precision: data.quantity,
+                        optionName: amountSalesUnitName | trans,
+                    },
+                    embed: {
+                        countOfDecimalsInAmount: data.countOfDecimalsInAmount,
+                    },
+                } only %}
+                    {% block body %}
+                        {{ 'quantity_option.amount' | trans({
+                            '%value%': data.value.divide(data.precision, embed.countOfDecimalsInAmount).trim,
+                            '%name%': data.optionName,
+                        }) }}
+                    {% endblock %}
+                {% endembed %}
+            {% endif %}
+        </li>
+    {% endif %}
+
+    {% if data.amount is not empty %}
+        <li class="spacing-top">
+            {% set amountPerQuantityValue = data.hasAmountPerQuantity ? amountPerQuantity.toFloat() : data.amount.toFloat() %}
+            {{ 'packaging_units.cart.amount' | trans }}: {{ amountPerQuantityValue | executeFilterIfExists('formatFloat', app.locale) }}
+        </li>
+    {% endif %}
+{% endblock %}

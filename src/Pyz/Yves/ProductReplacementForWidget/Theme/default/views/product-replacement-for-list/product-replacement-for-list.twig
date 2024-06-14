@@ -1,0 +1,32 @@
+{% extends view('product-replacement-for-list', '@SprykerShop:ProductReplacementForWidget') %}
+
+{% block body %}
+    {% if data.products is not empty %}
+        <div class="product-replacement">
+            <h2 class="product-replacement__title title title--h4">
+                {{ 'replacement_for_widget.replacement_for' | trans }}
+            </h2>
+
+            {% embed molecule('slick-carousel') with {
+                modifiers: ['full-width', 'equal-height', 'products', 'full-height'],
+                data: {
+                    slides: data.products,
+                },
+                attributes: {
+                    'slider-config': '{
+                        "slidesToShow": 4,
+                        "dots": false,
+                        "arrows": true,
+                        "adaptiveHeight": true
+                    }',
+                },
+            } only %}
+                {% block slides %}
+                    {% for slide in data.slides %}
+                        {% widget 'PdpProductReplacementForListWidget' args [slide] only %}{% endwidget %}
+                    {% endfor %}
+                {% endblock %}
+            {% endembed %}
+        </div>
+    {% endif %}
+{% endblock %}

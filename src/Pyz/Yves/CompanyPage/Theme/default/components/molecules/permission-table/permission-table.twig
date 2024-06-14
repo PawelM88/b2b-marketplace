@@ -1,0 +1,78 @@
+{% extends molecule('permission-table', '@SprykerShop:CompanyPage') %}
+
+{% set showActions = data.actions.configure or data.actions.switch %}
+
+{% block body %}
+    <table class="table table--expand table--responsive">
+        <thead>
+            <tr>
+                <th>{{ 'company.account.company_role.permission.key' | trans }}</th>
+                {% if data.actions.switch %}
+                    <th>{{ 'company.account.company_user.enable' | trans }}</th>
+                {% endif %}
+                {% if showActions %}
+                    <th></th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for permission in data.permissions %}
+            {% set isAssigned = permission.idCompanyRole | default(false) %}
+
+            <tr>
+                <td class="transform-cell spacing-top spacing-top--inner spacing-top--big" data-content="{{ 'company.account.company_role.permission.key' | trans }}">{{ permission.key | trans }}</td>
+                {% if data.actions.switch %}
+                    <td class="transform-cell spacing-bottom spacing-bottom--inner spacing-bottom--big" data-content="{{ 'company.account.company_user.enable' | trans }}">
+                        {% set formAssign = data.companyRolePermissionAssignFormCloner.getForm.createView ?? null %}
+                        {% set formUnassign = data.companyRolePermissionUnassignFormCloner.getForm.createView ?? null %}
+                        {% set actionAssign = path('company/company-role-permission/assign', {
+                            'id-permission': permission.idPermission, 
+                            'id-company-role': data.idCompanyRole,
+                        }) %}
+                        {% set actionUnassign = path('company/company-role-permission/unassign', {
+                            'id-permission': permission.idPermission, 
+                            'id-company-role': data.idCompanyRole,
+                        }) %}
+                        {% set titleAssign = 'company.account.company_role.permission.assign' | trans %}
+                        {% set titleUnassign = 'company.account.company_role.permission.unassign' | trans %}
+                        {% set form = isAssigned ? formUnassign : formAssign %}
+                        {% set formAction = isAssigned ? actionUnassign : actionAssign %}
+
+                        {{ form_start(form, { action: formAction }) }}
+                            {% include atom('switch') with {
+                                modifiers: isAssigned ? ['active'] : [],
+                                config: {
+                                    tag: 'button',
+                                },
+                                attributes: {
+                                    title: isAssigned ? titleUnassign : titleAssign,
+                                },
+                            } only %}
+                        {{ form_end(form) }}
+                    </td>
+                {% endif %}
+                {% if showActions %}
+                    <td class="table__actions">
+                        {% if data.actions.configure and permission.configurationSignature %}
+                            {% include molecule('table-action-list') with {
+                                data: {
+                                    items: [
+                                        {
+                                            url: path('company/company-role-permission/configure', {
+                                                'id-permission': permission.idPermission,
+                                                'id-company-role': data.idCompanyRole,
+                                            }),
+                                            icon: 'settings',
+                                            title: 'company.account.company_role.permission.configure',
+                                        },
+                                    ],
+                                },
+                            } only %}
+                        {% endif %}
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

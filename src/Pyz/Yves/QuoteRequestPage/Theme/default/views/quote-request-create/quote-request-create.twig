@@ -1,0 +1,19 @@
+{% extends view('quote-request-create', '@SprykerShop:QuoteRequestPage') %}
+
+{% block contentClass %}page-layout-main--request-for-quote{% endblock %}
+
+{% block separator %}{% endblock %}
+
+{% block actions %}
+    {% block actionCancel %}
+        {% set buttonCancelClass = 'spacing-bottom button button--expand button--hollow button--alert' %}
+        {{ parent() }}
+    {% endblock %}
+
+    {% block actionSeparator %}{% endblock %}
+
+    {% block actionSubmit %}
+        {% set buttonSubmitClass = 'spacing-bottom button button--expand button--success' %}
+        {{ parent() }}
+    {% endblock %}
+{% endblock %}

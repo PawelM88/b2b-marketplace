@@ -1,0 +1,69 @@
+{% extends view('home', '@SprykerShop:HomePage') %}
+
+{% block contentTop %}
+    {% embed molecule('slick-carousel') with {
+        class: 'spacing-bottom spacing-bottom--big',
+        modifiers: ['jumbotron'],
+        attributes: {
+            'slider-config': '{
+                "slidesToShow": 1,
+                "dots": true,
+                "autoplay": true,
+                "nextArrow": false,
+                "prevArrow": false,
+                "autoplaySpeed": 4000,
+                "centerMode": true,
+                "centerPadding": "240px",
+                "responsive": [{
+                     "breakpoint": 1400,
+                     "settings": {
+                         "centerPadding": "130px"
+                     }
+                },
+                {
+                    "breakpoint": 1200,
+                    "settings": {
+                        "centerPadding": "40px"
+                    }
+                },
+                {
+                    "breakpoint": 768,
+                    "settings": {
+                        "centerPadding": "12px",
+                        "autoplay": false
+                    }
+                },
+                {
+                    "breakpoint": 375,
+                    "settings": {
+                        "centerMode": false,
+                        "autoplay": false
+                    }
+                }]
+            }',
+        },
+    } only %}
+        {% block slides %}
+            {% cms_slot 'slt-2' %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+    {% cms_slot 'slt-3' %}
+
+    {% embed organism('section') with {
+        modifiers: ['secondary', 'full-width'],
+        class: 'spacing-top spacing-top--inner spacing-top--big',
+    } only %}
+        {% block inner %}
+            <div class="grid grid--left grid--middle">
+                {% cms_slot 'slt-4' %}
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block contentBottom %}
+    {% cms_slot 'slt-5' %}
+{% endblock %}

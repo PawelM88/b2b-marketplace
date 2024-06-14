@@ -1,0 +1,27 @@
+{% extends molecule('quote-request-history-select', '@SprykerShop:QuoteRequestPage') %}
+
+{% block value %}
+    {% set valueClass = 'col col--expand spacing-left' %}
+    {{ parent() }}
+{% endblock %}
+
+{% block select %}
+    {% embed molecule('custom-select') with {
+        modifiers: ['light', 'full-width'],
+        attributes: {
+            name: 'quote-request-versions',
+        },
+        embed: {
+            versionReferences: data.quoteRequestVersionReferences,
+            currentVersionReference: data.version ? data.version.versionReference : null,
+            selectJsName: config.jsName ~ '__select',
+        },
+    } only %}
+        {% block selectClass %}{{ parent() }} {{ embed.selectJsName }}{% endblock %}
+        {% block options %}
+            {% for versionReference in embed.versionReferences %}
+                <option value="{{ versionReference }}" {{ (versionReference == embed.currentVersionReference) ? 'selected' }}>{{ versionReference }}</option>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

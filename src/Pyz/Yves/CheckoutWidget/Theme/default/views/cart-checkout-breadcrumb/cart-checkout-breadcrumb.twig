@@ -1,0 +1,52 @@
+{% extends view('cart-checkout-breadcrumb', '@SprykerShop:CheckoutWidget') %}
+
+{% block body %}
+    {% embed molecule('breadcrumb') with {
+        class: 'text-center',
+        modifiers: ['progress'],
+        data: {
+            steps: steps,
+            startWithHome: false,
+        },
+    } only %}
+        {% block breadcrumbs %}
+            {% for key, step in data.steps | slice(1) %}
+                {% set modifiers = step.isActive ? ['active'] : [] %}
+                {% set modifiers = step.isEnabled ? modifiers : modifiers | merge(['disabled']) %}
+                {% set isStepActive = step.isActive or not step.isEnabled %}
+                {% set progressStep = isStepActive ? ['progress-step'] : ['progress-complete']%}
+
+                {% embed molecule('breadcrumb-step') with {
+                    modifiers: progressStep | merge(modifiers),
+                    data: {
+                        stepNumber: key + 1,
+                        label: step.label,
+                        url: not isStepActive ? step.url,
+                        withChevron: false,
+                    },
+                    embed: {
+                        lastItem: loop.last,
+                    },
+                } only %}
+                    {% block body %}
+                        {% if isLink and not embed.lastItem %}
+                            <div class="{{ config.name }}__holder">
+                                {{ parent() }}
+                                <span class="{{ config.name }}__checked">
+                                    {% include atom('icon') with {
+                                        modifiers: ['progress-check'],
+                                        data: {
+                                            name: 'check',
+                                        },
+                                    } only %}
+                                </span>
+                            </div>
+                        {% else %}
+                            {{ parent() }}
+                        {% endif %}
+                    {% endblock %}
+                {% endembed %}
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

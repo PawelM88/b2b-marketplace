@@ -1,0 +1,38 @@
+@mixin company-page-address-delete-message($name: '.address-delete-message') {
+    #{$name} {
+        &__delete-message {
+            color: map-get($setting-color-actions, 'alert');
+        }
+
+        &__address {
+            color: $setting-color-main;
+            font-weight: fw(bold);
+        }
+
+        &__text {
+            color: $setting-color-gray-3;
+            font-size: rem(14);
+
+            @include helper-breakpoint-media-min($lg) {
+                font-size: rem(16);
+            }
+        }
+
+        &__icon-box {
+            width: rem(52);
+            height: rem(52);
+            background-color: $setting-color-alt;
+        }
+
+        &__list-item {
+            background-color: $setting-color-gray-7;
+            margin-bottom: rem(5);
+            padding: rem(20);
+            border-radius: $setting-border-radius;
+        }
+
+        @content;
+    }
+}
+
+@include company-page-address-delete-message;

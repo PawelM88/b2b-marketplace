@@ -1,0 +1,101 @@
+{% extends template('page-layout-multi-cart', 'MultiCartPage') %}
+
+{% define data = {
+    cart: _view.cart,
+    cartName: _view.cart.name | default,
+    form: _view.sharedCartForm,
+    title: 'shared_cart.form.share_cart' | trans,
+    activePage: 'multiCart',
+} %}
+
+{% block breadcrumbs %}
+    {% include molecule('breadcrumb') with {
+        data: {
+            steps: [{
+                url: url('customer/overview'),
+                label: 'customer.profile' | trans,
+            },{
+                url: url('multi-cart'),
+                label: 'shared_cart.share.breadcrumbs.shopping_carts' | trans,
+            },{
+                url: data.cart.isDefault ? url('cart') : url('multi-cart/set-default', { idQuote: data.cart.idQuote }),
+                label: data.cartName,
+                isFormElement: true,
+                formName: 'multi_cart_set_default_form',
+                tokenFieldName: 'multi_cart_set_default_form[_token]',
+            },{
+                label: 'shared_cart.share.breadcrumbs.share' | trans,
+            }],
+        },
+    } only %}
+{% endblock %}
+
+{% block title %}{% endblock %}
+
+{% set shared = [] %}
+{% set unShared = [] %}
+
+{% for shareDetail in data.form.shareDetails %}
+    {% if shareDetail.vars.value.quotePermissionGroup is null %}
+        {% set unShared = unShared | merge([shareDetail]) %}
+    {% else %}
+        {% set shared = shared | merge([shareDetail]) %}
+    {% endif %}
+{% endfor %}
+
+{% block customerContent %}
+    <h3 class="spacing-bottom spacing-bottom--big">{{ 'shared_cart.form.share_cart.title' | trans({cart_name: _view.cart.name | default}) }}</h3>
+    {% if data.form.vars.value.shareDetails is not empty %}
+        {{ form_start(data.form) }}
+        <div {{ qa('share-cart-table') }}>
+            <div class="spacing-y spacing-y--big grid grid--bottom grid--justify">
+                <h4 class="col">{{ 'shared_cart.share.form.users' | trans }}</h4>
+                {% include atom('icon') with {
+                    modifiers: ['title'],
+                    class: 'col',
+                    data: {
+                        name: 'users',
+                    },
+                } only %}
+            </div>
+
+            {% include molecule('user-share-list', 'SharedCartPage') with {
+                data: {
+                    shareDetailsForm: data.form,
+                    shared: shared,
+                },
+            } only %}
+
+            <div class="is-hidden-lg-xxl text-fw-medium text-secondary text-small spacing-bottom spacing-bottom--smaller">{{ "customer.account.shopping_list.share.choose_access" | trans }}:</div>
+            {% include molecule('user-share-list', 'SharedCartPage') with {
+                data: {
+                    shareDetailsForm: data.form,
+                    shared: unShared,
+                },
+            } only %}
+
+            <div class="grid grid--gap grid--justify">
+                <div class="col col--sm-12 col--md-auto">
+                    <a href="{{ data.backUrl }}" class="button button--expand button--hollow spacing-top">
+                        {{ "general.back.button" | trans }}
+                    </a>
+                </div>
+                <div class="col col--sm-12 col--md-auto">
+                    <button type="submit" class="button button--expand button--success spacing-top">
+                        {{ 'shared_cart.form.save_button' | trans }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        {{ form_end(data.form) }}
+    {% else %}
+        <div {{ qa('share-cart-table') }}>
+            {{ 'shared_cart.form.data_empty' | trans }}
+            <div class="grid spacing-top spacing-top--big">
+                <a href="{{ data.backUrl }}" class="col col--sm-12 col--md-auto button button--secondary button--hollow">
+                    {{ "general.back.button" | trans }}
+                </a>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

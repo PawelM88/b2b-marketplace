@@ -1,0 +1,39 @@
+{% extends molecule('variant', '@SprykerShop:DiscountPromotionWidget') %}
+
+{% block body %}
+    <div class="{{ config.name }}__title">{{ data.label }}</div>
+    {% if data.selectedValue is null %}
+        {% if data.isAvailable %}
+            {% set options = [{
+                label: 'product.attribute._none' | trans,
+                value: '',
+            }] %}
+
+            {% for value in data.values %}
+                {% set options = options | merge([{
+                    label: value,
+                    value: value,
+                }]) %}
+            {% endfor %}
+
+            {% include molecule('custom-select') with {
+                modifiers: ['full-width', 'margin-bottom'],
+                data: {
+                    options: options,
+                },
+                attributes: {
+                    name: data.formName,
+                    'data-form-submitter': true,
+                    'config-width': '100%',
+                },
+            } only %}
+        {% else %}
+            {{ 'product.attribute.not_available' | trans }}
+        {% endif %}
+    {% else %}
+        <div class="{{ config.name }}__selected-value">
+            {{ data.selectedValue }} <a class="spacing-left" href="?">{{ 'Reset' | trans }}</a>
+            <input type="hidden" name="{{ data.formName }}" value="{{ data.selectedValue }}" />
+        </div>
+    {% endif %}
+{% endblock %}

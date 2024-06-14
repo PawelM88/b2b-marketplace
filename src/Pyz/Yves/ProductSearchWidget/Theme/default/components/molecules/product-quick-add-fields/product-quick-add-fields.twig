@@ -1,0 +1,30 @@
+{% extends molecule('product-quick-add-fields', '@SprykerShop:ProductSearchWidget') %}
+
+{% block productConcreteSearchWidget %}
+    <div class="col col--sm-12 spacing-bottom spacing-bottom--big {{ not data.verticalLayout ? 'col--md-8' }}">
+        {% widget 'ProductConcreteSearchWidget' args [
+            'ajax-provider' ~ config.name,
+            data.form.sku.vars.full_name,
+        ] with {
+            data: {
+                autocompleteFormClassName: data.autocompleteFormClassName,
+            },
+        } only %}
+        {% endwidget %}
+    </div>
+{% endblock %}
+
+{% block quantity %}
+    {% set quantityClass = config.jsName ~ '__quantity ' ~ 'product-search-autocomplete-form__input product-search-autocomplete-form__input--no-icon js-product-search-autocomplete-form__quantity-field' %}
+
+    <div class="col col--sm-12 spacing-bottom spacing-bottom--big {{ not data.verticalLayout ? 'col--md-4' }}">
+        {{ form_widget(data.form.children.quantity, {
+            attr: {
+                class: quantityClass,
+                min: 1,
+                step: 1,
+                placeholder: 'product_quick_add_widget.form.quantity' | trans
+            },
+        }) }}
+    </div>
+{% endblock %}

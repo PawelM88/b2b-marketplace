@@ -1,0 +1,59 @@
+{% extends molecule('role-table', '@SprykerShop:CompanyPage') %}
+
+{% block body %}
+    <table class="table table--expand table--responsive">
+        <thead>
+            <tr>
+                <th>{{ 'company.account.company_role.name' | trans }}</th>
+                <th>{{ 'company.account.company_role.is_default' | trans }}</th>
+                {% if showActions %}
+                    <th></th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for role in data.roles %}
+            <tr>
+                <td class="transform-cell spacing-top spacing-top--inner spacing-top--big" data-content="{{ 'company.account.company_role.name' | trans }}">{{ role.name }}</td>
+                <td class="transform-cell spacing-bottom spacing-bottom--inner spacing-bottom--big" data-content="{{ 'company.account.company_role.is_default' | trans }}">
+                    {% include atom('icon') with {
+                        modifiers: ['role'],
+                        class: 'spacing-top spacing-top--small',
+                        data: {
+                            name: role.isDefault ? 'check' : 'cross',
+                        },
+                    } only %}
+                </td>
+                {% if showActions %}
+                    <td class="table__actions">
+                        {% include molecule('table-action-list') with {
+                            data: {
+                                items: [
+                                    {
+                                        url: path('company/company-role/details', {'id': role.idCompanyRole}),
+                                        icon: 'edit',
+                                        title: 'company.account.company_role.view',
+                                        available: data.actions.view,
+                                    },
+                                    {
+                                        url: url('company/company-role/update', {'id': role.idCompanyRole}),
+                                        icon: 'edit',
+                                        title: 'company.account.business_unit.edit',
+                                        available: data.actions.update,
+                                    },
+                                    {
+                                        url: url('company/company-role/confirm-delete', {'id': role.idCompanyRole }),
+                                        icon: 'delete',
+                                        title: 'company.account.business_unit.delete',
+                                        available: data.actions.delete,
+                                    },
+                                ],
+                            },
+                        } only %}
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

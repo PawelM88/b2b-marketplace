@@ -1,0 +1,30 @@
+@mixin multi-cart-page-quote-table($name: '.quote-table') {
+    #{$name} {
+        &__cart-name {
+            display: inline-block;
+            color: $setting-color-gray-5;
+            background: $setting-color-transparent;
+            font-weight: fw(medium);
+            word-break: break-word;
+            text-align: left;
+            cursor: pointer;
+
+            &--active {
+                color: $setting-color-main;
+            }
+
+            &:hover {
+                color: $setting-color-alt;
+            }
+        }
+
+        &__duplicate-button {
+            background-color: $setting-color-transparent;
+            width: 100%;
+        }
+
+        @content;
+    }
+}
+
+@include multi-cart-page-quote-table();

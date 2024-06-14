@@ -1,0 +1,24 @@
+@mixin customer-page-order-info($name: '.order-info') {
+    #{$name} {
+        background-color: $setting-color-gray-7;
+        margin-bottom: rem(20);
+        padding: rem(15);
+
+        @include helper-breakpoint-media-min($lg) {
+            margin-bottom: rem(30);
+            padding: rem(25) rem(30);
+        }
+
+        &__item {
+            font-size: rem(16);
+            font-weight: fw(bold);
+            color: $setting-color-gray-4;
+        }
+
+        &__name {
+            font-weight: fw(regular);
+        }
+    }
+}
+
+@include customer-page-order-info();

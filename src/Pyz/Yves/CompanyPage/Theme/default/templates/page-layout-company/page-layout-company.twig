@@ -1,0 +1,92 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    activePage: 'overview',
+    currentBreadcrumb: 'customer.account.overview',
+} %}
+
+{% block breadcrumbs %}
+    {% set breadcrumbs = [] %}
+
+    {% block breadcrumbsContent %}
+        {% set breadcrumbBase = [{
+            label: 'company.account.page-title' | trans,
+            url: url('company/overview'),
+        }] %}
+
+        {% set breadcrumbsList = data.currentBreadcrumb ? breadcrumbBase | merge([{
+            label: data.currentBreadcrumb | trans
+        }]) : breadcrumbBase | merge(breadcrumbs) %}
+
+        {% include molecule('breadcrumb') with {
+            data: {
+                steps: breadcrumbsList,
+            }
+        } only %}
+    {% endblock %}
+{% endblock %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+    {% set companyContent %}
+        {% block companyContent %}{% endblock %}
+    {% endset %}
+
+    {% embed organism('section') with {
+        modifiers: ['last'],
+        data: {
+            title: false,
+            activePage: data.activePage,
+        },
+    } %}
+        {% block inner %}
+            <div class="grid grid--gap">
+                <div class="col col--sm-12 col--xl-3 is-hidden-sm-lg">
+                    {% block companyNavigation %}
+                        {% embed molecule('navigation-sidebar', 'ShopUi') with {
+                            data: {
+                                items: [
+                                    {
+                                        name: 'overview',
+                                        url: path('company/overview'),
+                                        label: 'company.account.overview' | trans,
+                                        icon: 'shopping-list',
+                                    },
+                                    {
+                                        name: 'users',
+                                        url: path('company/user'),
+                                        label: 'company.account.company_user' | trans,
+                                        icon: 'users',
+                                    },
+                                    {
+                                        name: 'business-unit',
+                                        url: path('company/business-unit'),
+                                        label: 'company.account.business_unit' | trans,
+                                        icon: 'office',
+                                    },
+                                    {
+                                        name: 'role',
+                                        url: path('company/company-role'),
+                                        label: 'company.account.company_role' | trans,
+                                        icon: 'user',
+                                    },
+                                ],
+                                activePage: data.activePage,
+                            },
+                        } only %}
+                            {% block postContent %}
+                                 {% widget 'MerchantRelationshipMenuItemWidget' args [data.activePage] only %}{% endwidget %}
+                                 {% widget 'MerchantRelationRequestMenuItemWidget' args [data.activePage] only %}{% endwidget %}
+                            {% endblock %}
+                        {% endembed %}
+                    {% endblock %}
+                </div>
+
+                <div class="col col--sm-12 col--xl-9">
+                    {{ companyContent }}
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

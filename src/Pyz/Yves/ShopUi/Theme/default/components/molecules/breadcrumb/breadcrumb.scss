@@ -1,0 +1,16 @@
+@mixin shop-ui-breadcrumb($name: '.breadcrumb') {
+    #{$name} {
+        &--progress {
+            display: flex;
+            justify-content: center;
+
+            @include helper-breakpoint-media-min($lg) {
+                padding: rem(16) 0;
+            }
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-breadcrumb;

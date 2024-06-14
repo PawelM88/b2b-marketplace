@@ -1,0 +1,60 @@
+{% extends template('widget') %}
+
+{% define data = {
+    cart: _widget.cart,
+    accessType: _widget.accessType,
+    isQuoteDeletable: _widget.isQuoteDeletable,
+    isSharingAllowed: _widget.isSharingAllowed,
+    itemClassName: '',
+} %}
+
+{% block body %}
+    {% if not data.cart.isLocked %}
+        {% if data.isSharingAllowed and data.accessType == 'OWNER_ACCESS' %}
+            <div class="{{ data.itemClassName }}">
+                {% include molecule('table-action-link') with {
+                    class: 'link link--alt link--action',
+                    data: {
+                        url: url('shared-cart/share', { idQuote: data.cart.idQuote }),
+                        icon: 'share',
+                        title: 'shared_cart.form.share_button',
+                        iconModifier: 'share',
+                    },
+                    attributes: {
+                        title: 'shared_cart_widget.cart.share' | trans,
+                    },
+                } only %}
+            </div>
+        {% endif %}
+        {% if data.accessType != 'OWNER_ACCESS' %}
+            <div class="{{ data.itemClassName }}">
+                {% include molecule('table-action-link') with {
+                    class: 'link link--alt link--action',
+                    data: {
+                        url: url('shared-cart/dismiss-confirm', { idQuote: data.cart.idQuote }),
+                        icon: 'dismiss',
+                        title: 'shared_cart_widget.cart.dismiss',
+                    },
+                    attributes: {
+                        title: 'shared_cart_widget.cart.dismiss' | trans,
+                    },
+                } only %}
+            </div>
+        {% endif %}
+    {% endif %}
+    {% if data.isQuoteDeletable and can('WriteSharedCartPermissionPlugin', data.cart.idQuote) %}
+        <div class="{{ data.itemClassName }}">
+            {% include molecule('table-action-link') with {
+                class: 'link link--alt link--action',
+                data: {
+                    url: url('multi-cart/confirm-delete', {idQuote: data.cart.idQuote}),
+                    icon: 'delete',
+                    title: 'page.multi_cart.shopping_cart.list.link.delete',
+                },
+                attributes: {
+                    title: 'page.multi_cart.shopping_cart.list.link.delete' | trans,
+                },
+            } only %}
+        </div>
+    {% endif %}
+{% endblock %}

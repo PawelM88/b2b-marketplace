@@ -1,0 +1,11 @@
+{% extends molecule('mini-cart-radio', '@SprykerShop:MultiCartWidget') %}
+
+{% block radioButton %}
+    {% include atom('radio') with {
+        modifiers: ['sm-lg-regular'],
+        attributes: {
+            name: 'cart-isDefault',
+            checked: data.isDefault,
+        },
+    } only %}
+{% endblock %}

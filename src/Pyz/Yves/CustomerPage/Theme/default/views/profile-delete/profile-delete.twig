@@ -1,0 +1,18 @@
+{% extends view('profile-delete', '@SprykerShop:CustomerPage') %}
+
+{% block customerContent %}
+    <div class="box">
+        <h5>{{ "customer.profile.delete" | trans }}</h5>
+        <hr />
+        <div class="grid grid--middle grid--justify ">
+            <div class="col col--sm-12 col--lg-auto spacing-y spacing-y--small">
+                {{ "customer.profile.delete.confirmation_question" | trans }}
+            </div>
+            <div class="col col--sm-12 col--lg-auto spacing-y spacing-y--small">
+                {{ form_start(data.customerDeleteForm, {'attr': {'class': 'float-right'}, 'action': url('customer/delete/confirm')}) }}
+                    <button data-init-single-click class="button button--expand button--alert">{{ 'customer.profile.delete' | trans }}</button>
+                {{ form_end(data.customerDeleteForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

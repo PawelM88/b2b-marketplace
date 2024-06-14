@@ -1,0 +1,13 @@
+{% extends view('address-delete-confirmation-page', '@SprykerShop:CompanyPage') %}
+
+{% block companyContent %}
+    {% include molecule('address-delete-message', 'CompanyPage') with {
+        data: {
+            companyUnitAddress: data.companyUnitAddress,
+            companyUnitAddressDeleteForm: data.companyUnitAddressDeleteForm,
+            companyBusinessUnits: data.companyBusinessUnits,
+            idCompanyBusinessUnit: data.idCompanyBusinessUnit,
+            cancelUrl: data.cancelUrl,
+        },
+    } only %}
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends template('page-layout-company', 'CompanyPage') %}
+
+
+{% define data = {
+    title: 'company.account.overview' | trans,
+    company: _view.company | default(false),
+    defaultBillingAddress: _view.defaultBillingAddress | default(false)
+} %}
+
+{% block companyContent %}
+    {% if data.company is not empty %}
+        {% include molecule('tile', 'CompanyPage') with {
+            data: {
+                icon: 'office',
+                title: 'company.account.name' | trans,
+                text: data.company.name
+            }
+        } only %}
+    {% endif %}
+{% endblock %}

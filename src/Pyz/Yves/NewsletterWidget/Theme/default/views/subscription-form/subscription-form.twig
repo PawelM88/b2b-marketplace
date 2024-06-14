@@ -1,0 +1,23 @@
+{% extends template('widget') %}
+
+{% define data = {
+    form: _view.newsletterSubscriptionForm,
+    events: {
+        success: _view.success,
+        error: _view.error
+    }
+} %}
+
+{% block body %}
+
+    {% include molecule('subscription', 'NewsletterWidget') with {
+        data: {
+            form: data.form,
+            events: {
+                success: data.events.success,
+                error: data.events.error
+            }
+        }
+    } only %}
+
+{% endblock %}

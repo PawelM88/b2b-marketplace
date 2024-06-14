@@ -1,0 +1,31 @@
+{% extends view('quote-request-create', '@SprykerShop:QuoteRequestAgentPage') %}
+
+{% block customerContent %}
+    {{ block('agentContent') }}
+{% endblock %}
+
+{% block autocompleteField %}
+    {% include molecule('quote-request-autocomplete-form', 'QuoteRequestAgentPage') with {
+        class: 'spacing-top spacing-bottom spacing-bottom--big',
+        data: {
+            id: 'agent-company-user',
+            value: data.impersonatedCustomer ? data.impersonatedCustomer.email,
+        },
+        attributes: {
+            'item-class-name': 'company-user-list__container-item',
+            'value-data-attribute': 'data-value',
+            'selected-value-key' : 'idCompanyUser',
+            'suggestion-url': path('agent/company-user/autocomplete'),
+            'query-param-name': 'pattern',
+            'auto-init': data.impersonatedCustomer ? true : false,
+        },
+    } only %}
+{% endblock %}
+
+{% block separator %}{% endblock %}
+
+{% block actions %}
+    <div class="text-right">
+        {{ parent() }}
+    </div>
+{% endblock %}

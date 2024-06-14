@@ -1,0 +1,65 @@
+{% extends view('business-unit-create', '@SprykerShop:CompanyPage') %}
+
+{% block breadcrumbs %}
+    {% include molecule('breadcrumb') with {
+        data: {
+            steps: [{
+                    label: 'company.account' | trans,
+                },
+                {
+                    label: 'company.account.business_unit' | trans,
+                },
+            ]},
+    } only %}
+{% endblock %}
+
+{% block companyContent %}
+    {% embed molecule('form') with {
+        modifiers: ['narrow'],
+        data: {
+            title: 'company.account.business_unit.create' | trans,
+            form: data.form,
+            shouldRequireMessage: true,
+            submit: {
+                enable: true,
+                class: 'form__action--expand-sm-md form__action--sm-md-first button',
+            },
+            cancel: {
+                enable: true,
+                url: url('company/business-unit'),
+                text: 'general.back.button' | trans,
+                icon: null,
+                class: 'form__action--expand-sm-md button button--hollow',
+            },
+        },
+        embed: {
+            addresses: data.addresses,
+        },
+    } only %}
+        {% block title %}
+            {% if data.title is not empty %}
+                {% include molecule('action-bar', 'ShopUi') with {
+                    data: {
+                        title: 'company.account.business_unit.create' | trans,
+                    },
+                } only %}
+            {% endif %}
+            <div class="{{ config.name }}__title-description">{{ 'company.account.business_unit.description' | trans }}</div>
+        {% endblock %}
+        {% block field %}
+            {% if field.vars.name == 'address_collection' %}
+                {% do field.setRendered %}
+                <div class="form__field col col--sm-12">
+                    {% include molecule('business-unit-address-list', 'CompanyPage') with {
+                        data: {
+                            field: field,
+                            idCompanyBusinessUnit: null,
+                        },
+                    } only %}
+                </div>
+            {% else %}
+                {{ parent() }}
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

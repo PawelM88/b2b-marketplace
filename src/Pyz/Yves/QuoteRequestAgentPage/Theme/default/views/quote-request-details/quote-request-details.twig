@@ -1,0 +1,51 @@
+{% extends view('quote-request-details', '@SprykerShop:QuoteRequestAgentPage') %}
+
+{% block contentClass %}page-layout-main--request-for-quote{% endblock %}
+
+{% block separator %}{% endblock %}
+
+{% block actions %}
+    {% block actionBack %}
+        {% set buttonBackClass = 'spacing-bottom button button--expand button--hollow button--second' %}
+        {{ parent() }}
+    {% endblock %}
+
+    {% if isLatestVersion %}
+        {% if data.isQuoteRequestCancelable %}
+            {% block actionCancel %}
+                {% set buttonCancelClass = 'spacing-bottom button button--expand button--hollow button--alert' %}
+                {{ parent() }}
+            {% endblock %}
+        {% endif %}
+
+        {% if data.isQuoteRequestEditable %}
+            {% block actionEdit %}
+                {% set buttonEditClass = 'spacing-bottom button button--expand button--hollow' %}
+                {{ parent() }}
+            {% endblock %}
+        {% endif %}
+
+        {% set showSendToCustomerButton = data.isQuoteRequestEditable and data.quoteRequest.latestVersion.quote.items is not empty %}
+        {% if showSendToCustomerButton %}
+            {% block actionSendToCustomer %}
+                {% set buttonSendToCustomerClass = 'spacing-bottom button button--expand button--success' %}
+                {{ parent() }}
+            {% endblock %}
+        {% endif %}
+
+        {% if data.isQuoteRequestRevisable %}
+            {% block actionRevise %}
+                {% set buttonReviseClass = 'spacing-bottom button button--expand ' ~ (data.quoteRequest.status == 'ready' ? 'button--hollow' : 'button--success') %}
+                {{ parent() }}
+            {% endblock %}
+        {% endif %}
+
+        {% set readyStatus = 'ready' %}
+        {% if data.quoteRequest.status == readyStatus %}
+            {% block actionConvertToCart %}
+                {% set buttonConvertToCartClass = 'spacing-bottom button button--expand button--success' %}
+                {{ parent() }}
+            {% endblock %}
+        {% endif %}
+    {% endif %}
+{% endblock %}

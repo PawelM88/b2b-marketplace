@@ -1,0 +1,15 @@
+{% extends template('navigation-main', '@SprykerShop:NavigationWidget') %}
+
+{% block body %}
+    {% include molecule('navigation-multilevel') with {
+        data: {
+            nodes: data.nodes,
+            menuInline: true,
+            menuDropdown: true,
+        },
+        attributes: {
+            'class-to-toggle': 'is-shown',
+            'available-breakpoint': '1024',
+        },
+    } only %}
+{% endblock %}

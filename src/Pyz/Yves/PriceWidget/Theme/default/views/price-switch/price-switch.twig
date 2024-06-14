@@ -1,0 +1,33 @@
+{% extends view('price-switch', '@SprykerShop:PriceWidget') %}
+
+{% define data = {
+    isVisible: _widget.priceModes is not empty,
+} %}
+
+{% block body %}
+    <form method="GET" action="{{ path('price-mode-switch') }}">
+        {% set options = [] %}
+
+        {% for priceMode in data.priceModes %}
+            {% set options = options | merge([{
+                label: ('price.mode.' ~ priceMode | lower) | trans,
+                value: priceMode,
+                selected: priceMode == data.currentPriceMode,
+            }]) %}
+        {% endfor %}
+
+        {% include molecule('custom-select') with {
+            modifiers: ['alternative'],
+            data: {
+                options: options,
+            },
+            attributes: {
+                name: 'price-mode',
+                'data-form-submitter': true,
+                'config-theme': 'alternative',
+            },
+        } only %}
+
+        <input type="hidden" name="referrer-url" value="{{ data.requestUri }}" />
+    </form>
+{% endblock %}

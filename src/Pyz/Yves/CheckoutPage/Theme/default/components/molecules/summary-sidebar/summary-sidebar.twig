@@ -1,0 +1,107 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'summary-sidebar',
+} %}
+
+{% define data = {
+    shipmentGroup: required,
+    canEdit: true,
+    cart: {},
+    shipmentExpenses: {},
+} %}
+
+{% block body %}
+    {% embed molecule('order-custom-reference', 'OrderCustomReferenceWidget') ignore missing with {
+        class: config.name ~ '__item ' ~ config.name ~ '__item--secondary',
+        data: {
+            orderCustomReference: data.cart.orderCustomReference | default,
+        },
+        embed: {
+            parentClass: config.name,
+        },
+    } only %}
+        {% block title %}
+            <h4 class="{{ embed.parentClass }}__title">
+                {{ data.title }}
+            </h4>
+        {% endblock %}
+
+        {% block textWrapper %}
+            {% set classText = 'text-break spacing spacing--reset' %}
+            {{ parent() }}
+        {% endblock %}
+    {% endembed %}
+
+    <div class="{{ config.name }}__item">
+        <h4 class="{{ config.name }}__title">
+            {{ 'checkout.step.summary.delivery_address' | trans }}
+
+            {% if data.canEdit %}
+                <a class="float-right link link--alt link--action spacing-left" href="{{ url('checkout-address') }}">
+                    {% include molecule('icon-tooltip') with {
+                        modifiers: ['big'],
+                        data: {
+                            icon: 'edit',
+                            text: 'general.edit.button' | trans,
+                        },
+                    } only %}
+                </a>
+            {% endif %}
+        </h4>
+
+        {% include molecule('display-address') with {
+            data: {
+                address: data.shipmentGroup.shipment.shippingAddress,
+                isAddressLabelVisible: false,
+            },
+        } only %}
+    </div>
+
+    <div class="{{ config.name }}__item">
+        <h4 class="{{ config.name }}__title">
+            {{ 'checkout.step.summary.delivery_method' | trans }}
+
+            {% if data.canEdit %}
+                <a class="float-right link link--alt link--action spacing-left" href="{{ url('checkout-shipment') }}">
+                    {% include molecule('icon-tooltip') with {
+                        modifiers: ['big'],
+                        data: {
+                            icon: 'edit',
+                            text: 'general.edit.button' | trans,
+                        },
+                    } only %}
+                </a>
+            {% endif %}
+        </h4>
+
+        {% if data.shipmentExpenses[data.shipmentGroup.hash] is defined %}
+            {% include molecule('shipment-information', 'CustomerPage') ignore missing with {
+                data: {
+                    shipmentExpense: data.shipmentExpenses[data.shipmentGroup.hash],
+                },
+            } only %}
+        {% endif %}
+    </div>
+
+    {% block deliveryDate %}
+        <div class="{{ config.name }}__item">
+            <h4 class="{{ config.name }}__title">
+                {{ 'checkout.step.summary.requested_delivery_date' | trans }}
+
+                {% if data.canEdit %}
+                    <a class="float-right link link--alt link--action spacing-left" href="{{ url('checkout-shipment') }}">
+                        {% include molecule('icon-tooltip') with {
+                            modifiers: ['big'],
+                            data: {
+                                icon: 'edit',
+                                text: 'general.edit.button' | trans,
+                            },
+                        } only %}
+                    </a>
+                {% endif %}
+            </h4>
+            <span class="{{ config.name }}__content">{{ data.shipmentGroup.shipment.requestedDeliveryDate }}</span>
+        </div>
+    {% endblock %}
+{% endblock %}

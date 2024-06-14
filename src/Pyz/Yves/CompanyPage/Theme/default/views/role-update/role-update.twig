@@ -1,0 +1,44 @@
+{% extends view('role-update', '@SprykerShop:CompanyPage') %}
+
+{% block companyContent %}
+    {% include molecule('action-bar', 'ShopUi') with {
+        data: {
+            title: 'company.account.company_role.edit_information' | trans({
+                '%role_name%' : data.form.vars.value.name,
+            }),
+        },
+    } only %}
+
+    {% include molecule('form') with {
+        modifiers: ['narrow'],
+        class: 'spacing-bottom--biggest',
+        data: {
+            form: data.form,
+            shouldRequireMessage: true,
+            submit: {
+                enable: true,
+                class: 'form__action--expand-sm-md form__action--sm-md-first button',
+            },
+            cancel: {
+                enable: true,
+                url: url('company/company-role'),
+                text: 'general.back.button' | trans,
+                icon: null,
+                class: 'form__action--expand-sm-md button button--hollow',
+            },
+        },
+    } only %}
+
+    {% include molecule('permission-table', 'CompanyPage') with {
+        data: {
+            permissions: data.permissions,
+            idCompanyRole: data.idCompanyRole,
+            companyRolePermissionAssignFormCloner: data.companyRolePermissionAssignFormCloner,
+            companyRolePermissionUnassignFormCloner: data.companyRolePermissionUnassignFormCloner,
+            actions: {
+                configure: true,
+                switch: true,
+            },
+        },
+    } only %}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends template('widget') %}
+
+{% define data = {
+    product: _widget.product
+} %}
+
+{% block body %}
+    {% include molecule('product-item') with {
+        class: 'col col--sm-12 col--md-6 col--lg-4',
+        data: {
+            product: data.product,
+            category: 'category.office.furniture' | trans,
+        },
+    } only %}
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'alternative-products-table',
+} %}
+
+{% define data = {
+    item: required,
+    shoppingList: required,
+    products: required,
+    maxShownItems: 3,
+} %}
+
+{% set idShoppingListItem = data.item.idShoppingListItem %}
+
+{% block body %}
+    <h2 class="title title--h3 spacing-bottom spacing-bottom--reset">{{ 'product_alternative_widget.alternative_for' | trans }}</h2>
+    <h3 class="title title--h4 title--sub">{{ data.item.name }}</h3>
+    {% for item in data.products %}
+        {% embed molecule('product-card-item') with {
+            class: loop.index > data.maxShownItems ? 'js-product-alternative-' ~ idShoppingListItem ~ '__show-all-target is-hidden' : '',
+            modifiers: ['shopping-list', 'shopping-list-alternative', 'shopping-list-available'],
+            data: {
+                listItem: item,
+                imageModifiers: ['shopping-list'],
+            },
+            embed: {
+                shoppingList: data.shoppingList,
+                quantity: data.item.quantity,
+            },
+        } only %}
+            {% block itemAttributes %}
+                {% if data.attributes is not empty %}
+                    {% include molecule('product-item-attributes') with {
+                        class: 'spacing-y spacing-y--big text-small',
+                        data: {
+                            listItem: data.listItem,
+                        },
+                    } only %}
+                {% endif %}
+            {% endblock %}
+
+            {% block productConfiguration %}
+            {% endblock %}
+
+            {% block bundle %}
+            {% endblock %}
+
+            {% block note %}
+            {% endblock %}
+
+            {% block quantity %}
+                {% include molecule('quantity-counter') with {
+                    modifiers: ['shopping-list'],
+                    data: {
+                        isReadOnly: true,
+                    },
+                    attributes: {
+                        value: embed.quantity,
+                    },
+                } only %}
+                <a class="button button--hollow button--shopping-list" href="{{ url('shopping-list/add-item', {quantity: embed.quantity, sku: data.listItem.sku, idShoppingList: embed.shoppingList.idShoppingList}) }}">
+                    {{ 'product_alternative_widget.add_to_shopping_list' | trans }}
+                </a>
+            {% endblock %}
+            {% block price %}
+                {% include molecule('money-price') with {
+                    modifiers: ['medium', 'block', 'margin-bottom-from-tablet', 'gray-color'],
+                    data: {
+                        amount: data.listItem.price,
+                        originalAmount: data.listItem.prices.ORIGINAL is not defined or data.listItem.prices.ORIGINAL is empty ? null : data.listItem.prices.ORIGINAL,
+                    },
+                } only %}
+            {% endblock %}
+        {% endembed %}
+        {% if loop.index > data.maxShownItems and loop.last %}
+            <div class="js-product-alternative-{{- idShoppingListItem -}}__show-all-target grid grid--center spacing-y">
+                <div class="col">
+                    <button class="link link--icon js-product-alternative-{{- idShoppingListItem -}}__show-all-trigger" type="button">
+                        {{ 'product_alternative_widget.show_all' | trans }}
+                        {% include atom('icon') with {
+                            class: 'spacing-left spacing-left--small',
+                            modifiers: ['smaller'],
+                            data: {
+                                name: 'caret-down',
+                            },
+                        } only %}
+                    </button>
+                </div>
+            </div>
+
+            {% include molecule('toggler-click') with {
+                attributes: {
+                    'trigger-class-name': 'js-product-alternative-' ~ idShoppingListItem ~ '__show-all-trigger',
+                    'target-class-name': 'js-product-alternative-' ~ idShoppingListItem ~ '__show-all-target',
+                },
+            } only %}
+        {% endif %}
+    {% endfor %}
+{% endblock %}

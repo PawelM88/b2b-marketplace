@@ -1,0 +1,60 @@
+{% extends molecule('address-delete-message', '@SprykerShop:CompanyPage') %}
+
+{% block body %}
+    <h3 class="title title--warning grid grid--left">
+        <div class="{{ config.name }}__icon-box grid grid--center grid--middle spacing-right spacing-right--bigger">
+            {% include atom('icon') with {
+                modifiers: ['big'],
+                data: {
+                    name: 'alert-white',
+                },
+            } only %}
+        </div>
+        {{ 'company.account.address.delete.message.title' | trans }}
+    </h3>
+
+    <p class="{{ config.name }}__text spacing-y spacing-y--big">
+        {{ "company.account.address.delete.message.description" | trans }}:
+    </p>
+
+    <div class="box">
+        <address class="{{ config.name }}__address">{{ data.companyUnitAddress.address1 }} {{ data.companyUnitAddress.address2 }}</address>
+        <address class="{{ config.name }}__address">{{ data.companyUnitAddress.zipCode }} {{ data.companyUnitAddress.city }}, {{ ('countries.iso.' ~ data.companyUnitAddress.iso2code) | trans }}</address>
+    </div>
+
+    {% if data.companyBusinessUnits %}
+        <p class="{{ config.name }}__text spacing-y spacing-y--big">
+            {{ "company.account.address.delete.message.belongs" | trans }}:
+        </p>
+
+        <ul class="{{ config.name }}__list">
+            {% for companyBusinessUnit in data.companyBusinessUnits %}
+                <li class="{{ config.name }}__list-item spacing-bottom spacing-bottom--small">
+                    <strong>{{ companyBusinessUnit.name }}</strong>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if data.companyBusinessUnits %}
+        <br>
+        <strong class="{{ config.name }}__delete-message">
+            {{ "company.account.address.delete.message.all" | trans }}!
+        </strong>
+    {% endif %}
+
+    <div class="grid spacing-y spacing-y--big">
+        <div class="col">
+            <a class="button button--hollow spacing-right" href="{{ data.idCompanyBusinessUnit ? url('company/business-unit/update', {'id': data.idCompanyBusinessUnit }) : url('company/business-unit') }}" title="{{ 'company.company_business_unit.delete.confirmation.back' | trans }}" data-init-single-click>
+                {{ 'company.company_business_unit.delete.confirmation.back' | trans }}
+            </a>
+        </div>
+        <div class="col spacing-left spacing-left--small">
+            {{ form_start(data.companyUnitAddressDeleteForm, {
+                'action': path('company/address/delete', {'id': data.companyUnitAddress.idCompanyUnitAddress, 'idCompanyBusinessUnit': data.idCompanyBusinessUnit }),
+            }) }}
+                <button data-init-single-click class="button button--alert" title="{{ 'company.account.business_unit.delete' | trans }}">{{ 'company.account.business_unit.delete' | trans }} </button>
+            {{ form_end(data.companyUnitAddressDeleteForm) }}
+        </div>
+    </div>
+{% endblock %}

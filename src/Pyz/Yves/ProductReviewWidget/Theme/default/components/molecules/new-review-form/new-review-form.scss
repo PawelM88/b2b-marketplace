@@ -1,0 +1,39 @@
+@mixin product-review-new-review-form($name: '.new-review-form') {
+    #{$name} {
+        &__actions {
+            display: flex;
+            flex-direction: column-reverse;
+            width: 100%;
+
+            @include helper-breakpoint-media-min($md) {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
+        &__actions-buttons {
+            display: flex;
+            flex-flow: column-reverse;
+            width: 100%;
+
+            @include helper-breakpoint-media-min($md) {
+                flex-flow: row-reverse nowrap;
+                width: auto;
+            }
+        }
+
+        &__action-button {
+            width: auto;
+        }
+
+        &__required-fields {
+            font-size: rem(13);
+            color: $setting-color-gray-2;
+            flex-shrink: 0;
+            text-align: left;
+        }
+    }
+}
+
+@include product-review-new-review-form;

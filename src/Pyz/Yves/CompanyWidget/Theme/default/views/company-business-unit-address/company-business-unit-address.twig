@@ -1,0 +1,116 @@
+{% extends view('company-business-unit-address', '@SprykerShop:CompanyWidget') %}
+
+{% block body %}
+    {% set defaultAddressKey = null %}
+    {% set optionValueDeliverToMultipleAddresses = '-1' %}
+    {% set optionValueDefineNewAddress = '0' %}
+    {% set fullAddresses = data.customerAddresses ?: data.companyBusinessUnitAddresses %}
+    {% set shippingAddress = 'shippingAddress' %}
+    {% set billingAddress = 'billingAddress' %}
+    {% set fullAddresses = data.customerAddresses ? data.customerAddresses | merge(data.companyBusinessUnitAddresses) : data.companyBusinessUnitAddresses %}
+    {% set isShippingAddressFormType = data.formType == shippingAddress %}
+    {% set isBillingAddressFormType = data.formType == billingAddress %}
+    {% set addressSelectLabel = isShippingAddressFormType ? 'page.checkout.address.delivery.address_select' : 'page.checkout.address.billing.address_select' %}
+
+    {% if fullAddresses %}
+        {% for address in fullAddresses %}
+            {% set canUseCurrentAsDefaultCustomerAddress = not data.currentAddressId and not data.currentCompanyUnitAddressId and isShippingAddressFormType and address.isDefaultShipping and data.isCurrentAddressEmpty %}
+            {% set canUseCurrentAsDefaultCompanyUnitAddress = not data.currentAddressId and not data.currentCompanyUnitAddressId and isBillingAddressFormType and address.isDefaultBilling and data.isCurrentAddressEmpty %}
+            {% set isCurrentCustomerAddress = data.currentAddressId and data.currentAddressId == address.idCustomerAddress %}
+            {% set isCurrentCompanyUnitAddress = data.currentCompanyUnitAddressId and data.currentCompanyUnitAddressId == address.idCompanyUnitAddress %}
+            {% set isCurrentValueDeliverToMultipleAddresses = data.currentAddressId == optionValueDeliverToMultipleAddresses %}
+            {% set isBillingAddress = not data.currentAddressId and isBillingAddressFormType and address.isDefaultBilling %}
+
+            {% if canUseCurrentAsDefaultCustomerAddress or canUseCurrentAsDefaultCompanyUnitAddress or isCurrentCustomerAddress or isCurrentCompanyUnitAddress %}
+                {% set defaultAddressKey = address.key %}
+            {% endif %}
+
+            {% if isCurrentValueDeliverToMultipleAddresses %}
+                {% set defaultAddressKey = optionValueDeliverToMultipleAddresses %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <label>{{ addressSelectLabel | trans }}</label><br>
+
+    {% embed molecule('custom-select') with {
+        modifiers: ['full-width', 'group'],
+        class: 'spacing-bottom',
+        attributes: {
+            name: 'checkout-full-addresses',
+            'config-width': '100%',
+            'config-theme': 'group',
+        },
+        data: {
+            isGrouped: true,
+        },
+        embed: {
+            customerAddresses: data.customerAddresses,
+            companyBusinessUnitAddresses: data.companyBusinessUnitAddresses,
+            defaultAddressKey: defaultAddressKey,
+            isMultipleShipmentEnabled: data.isMultipleShipmentEnabled,
+            optionValueDeliverToMultipleAddresses: optionValueDeliverToMultipleAddresses,
+            optionValueDefineNewAddress: optionValueDefineNewAddress,
+            itemShippingTriggerJsClass: data.itemShippingTriggerJsClass,
+            isShippingAddressFormType: isShippingAddressFormType,
+            hasPreselectedOption: data.hasPreselectedOption,
+        },
+    } only %}
+        {%- block selectClass -%}
+            {{ embed.itemShippingTriggerJsClass ? embed.itemShippingTriggerJsClass }}
+            {{ parent() }}
+        {%- endblock -%}
+
+        {% block option %}
+            {% set isSelected = embed.hasPreselectedOption ? false : embed.defaultAddressKey == address.key %}
+            {% set fullName = '%s %s %s, %s %s, %s %s' | format(
+                address.salutation,
+                address.firstName,
+                address.lastName,
+                address.address1,
+                address.address2,
+                address.zipCode,
+                address.city)
+            %}
+            {% define option = {
+                selected: isSelected,
+                value: address.key,
+                label: fullName
+            } %}
+            {{ parent() }}
+        {% endblock %}
+
+        {% block optionsGroup %}
+            {% if embed.hasPreselectedOption %}
+                <option value="" disabled selected>{{ 'checkout.step.address.select_address' | trans }}</option>
+            {% endif %}
+
+            <option value="{{ embed.optionValueDefineNewAddress }}">{{ 'company.account.add_new_address' | trans }}</option>
+
+            {% if embed.customerAddresses %}
+                <optgroup label="{{ 'page.checkout.address.option_group.customer' | trans | upper }}">
+                    {% for address in embed.customerAddresses %}
+                        {{ block('option') }}
+                    {% endfor %}
+                </optgroup>
+            {% endif %}
+
+            {% if embed.companyBusinessUnitAddresses %}
+                <optgroup label="{{ 'page.checkout.address.option_group.company_business_unit' | trans | upper }}">
+                    {% for address in embed.companyBusinessUnitAddresses %}
+                        {{ block('option') }}
+                    {% endfor %}
+                </optgroup>
+            {% endif %}
+
+            {% if embed.isShippingAddressFormType and embed.isMultipleShipmentEnabled %}
+                <option value="{{ embed.optionValueDeliverToMultipleAddresses }}" {% if embed.defaultAddressKey == embed.optionValueDeliverToMultipleAddresses %}selected{% endif %}>
+                    {{ 'customer.account.deliver_to_multiple_addresses' | trans }}
+                </option>
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
+
+    {{ block('addressHandler') }}
+    {{ block('hiddenFields') }}
+{% endblock %}

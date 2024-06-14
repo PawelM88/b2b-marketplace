@@ -1,0 +1,77 @@
+{% extends molecule('source-price-form', '@SprykerShop:QuoteRequestAgentPage') %}
+{% import _self as component %}
+
+{% define data = {
+    currentItemPrice: required,
+    originItemPrice: required,
+} %}
+
+{% block body %}
+    <div class="grid grid--middle grid--justify grid--gap spacing-bottom text-right">
+        {% block adjustedPriceColumn %}
+            <div class="col col--sm-6">
+                {% block adjustedPriceColumnInner %}
+                    <strong>
+                        {% block adjustedPriceText %}
+                            {% set isSamePrice = data.currentItemPrice == data.originItemPrice %}
+                            {% set hiddenClass = isSamePrice ? 'is-hidden' %}
+                            {% set originPriceClass = config.jsName ~ '__origin-price text-secondary ' ~ hiddenClass %}
+                            {% set originPriceClass = component.renderClass(config.name ~ '__price', modifiers, originPriceClass) %}
+
+                            {% block adjustedPriceTextInner %}
+                                <s class="{{ originPriceClass }}">
+                                    {{ data.originItemPrice }}
+                                </s>
+                            {% endblock %}
+                        {% endblock %}
+                    </strong>
+                {% endblock %}
+            </div>
+        {% endblock %}
+
+        {% block priceColumn %}
+            <div class="col col--sm-6">
+                {% block priceColumnInner %}
+                    {{ form_row(data.priceForm, {
+                        attr: {
+                            class: config.jsName ~ '__input-container is-hidden',
+                        },
+                        hiddenInputClass: config.jsName ~ '__hidden-input',
+                    }) }}
+
+                    {% set isDifferentPrice = data.currentItemPrice != data.originItemPrice %}
+                    {% set hiddenClass = isDifferentPrice ? 'is-hidden' %}
+                    {% set price = isDifferentPrice ? data.originItemPrice : data.currentItemPrice %}
+                    {% set priceClass = config.jsName ~ '__price ' ~ hiddenClass %}
+                    {% set priceClass = component.renderClass(config.name ~ '__price', modifiers, priceClass) %}
+
+                    {% block price %}
+                        <strong class="{{ priceClass }}">{{ price }}</strong>
+                    {% endblock %}
+                {% endblock %}
+            </div>
+        {% endblock %}
+    </div>
+    {% block form %}
+        <div class="grid grid--gap text-right">
+            <div class="col col--sm-12">
+                {% embed atom('checkbox') with {
+                    attributes: {
+                        name: data.checkboxName,
+                        value: data.checkboxValue,
+                        checked: data.isChecked,
+                        disabled: data.priceForm.vars.disabled,
+                    },
+                    data: {
+                        label: data.checkboxLabel,
+                    },
+                    embed: {
+                        inputClass: config.jsName ~ '__checkbox-container',
+                    },
+                } only %}
+                    {% block inputClass %}{{ embed.inputClass }}{% endblock %}
+                {% endembed %}
+            </div>
+        </div>
+    {% endblock %}
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends template('widget') %}
+
+{% define data = {
+    productAbstractViewCollection: productAbstractViewCollection,
+} %}
+
+{% block body %}
+    <div class="grid grid--stretch">
+        {% for productAbstractView in data.productAbstractViewCollection %}
+            <div class="col col--sm-12 col--md-6 col--lg-4 spacing-x spacing-x--big spacing-x--inner">
+                {% embed molecule('product-item') with {
+                    modifiers: ['catalog'],
+                    data: {
+                        product: productAbstractView,
+                        category: 'category.office.furniture' | trans,
+                    },
+                } only %}
+                    {% block body %}
+                        <div class="{{ config.name }}__container">
+                            {{ block('name') }}
+                            {{ block('category') }}
+
+                            <div class="{{ config.name }}__rating">
+                                {{ block('rating') }}
+                            </div>
+
+                            {{ block('price') }}
+                            <br>
+
+                            {{ block('image') }}
+
+                            {% block labels %}
+                                {% widget 'ProductAbstractLabelWidget' args [data.idProductAbstract] with {
+                                    data: {
+                                        parentJsName: config.jsName,
+                                    },
+                                } only %}
+                                    {% block body %}
+                                        {% include molecule('label-group', 'ProductLabelWidget') ignore missing with {
+                                            modifiers: ['bottom-right'],
+                                            data: {
+                                                labels: labels,
+                                                parentJsName: data.parentJsName,
+                                            },
+                                        } only %}
+                                    {% endblock %}
+                                {% endwidget %}
+                            {% endblock %}
+                        </div>
+                    {% endblock %}
+                {% endembed %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

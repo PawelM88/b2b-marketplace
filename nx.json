@@ -1,0 +1,7 @@
+{
+    "cli": {
+        "analytics": false
+    },
+    "defaultProject": "merchant-portal",
+    "$schema": "./node_modules/nx/schemas/nx-schema.json"
+}

@@ -1,0 +1,93 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'quote-request-cart-item',
+    tag: 'article',
+} %}
+
+{% define data = {
+    priceMode: required,
+    cartItem: required,
+    currency: required,
+} %}
+
+{% block body %}
+    <div class="grid grid--stretch grid--gap">
+        <div class="{{ config.name }}__column {{ config.name }}__column--image col">
+            {% set imageUrl = data.cartItem.images is not empty ? data.cartItem.images[0].externalUrlLarge : null %}
+
+            {% include molecule('product-item-image') with {
+                data: {
+                    name: data.cartItem.name | default,
+                    image: imageUrl,
+                },
+            } only %}
+        </div>
+        <div class="{{ config.name }}__column {{ config.name }}__column--description col">
+            <div class="{{ config.name }}__column {{ config.name }}__column--content col">
+                <h6>{{ data.cartItem.name }}</h6>
+
+                <small class="text-secondary">
+                    {{ 'cart.item.sku' | trans }}
+                    {{ data.cartItem.sku }}
+                </small>
+
+                <p class="text-small"><strong>{{ 'cart.item_quantity' | trans }}:</strong><span class="text-secondary spacing-x spacing-x--inner spacing-x--small">{{ data.cartItem.quantity | executeFilterIfExists('formatInt', app.locale) }}</span></p>
+
+                {% include molecule('quote-request-item-summary', 'QuoteRequestPage') with {
+                    class: 'text-small',
+                    data: {
+                        priceMode: data.priceMode,
+                        unitPrice: data.cartItem.unitPrice | money(true, data.currency.code),
+                        subtotalPrice: data.cartItem.sumSubtotalAggregation | money(true, data.currency.code),
+                        cartItem: data.cartItem,
+                        currency: data.currency,
+                    },
+                } only %}
+
+                {% if data.cartItem.amountSalesUnit %}
+                    {% include molecule('packaging-unit-cart', 'ProductPackagingUnitWidget') ignore missing with {
+                        data: {
+                            amount: data.cartItem.amount,
+                            quantity: data.cartItem.quantity,
+                            quantitySalesUnit: data.cartItem.quantitySalesUnit,
+                            quantityConversion: data.cartItem.quantitySalesUnit.conversion | default(null),
+                            quantityProductMeasurementUnit: data.cartItem.quantitySalesUnit.productMeasurementUnit | default(null),
+                            amountSalesUnit: data.cartItem.amountSalesUnit,
+                            amountConversion: data.cartItem.amountSalesUnit.conversion,
+                            amountProductMeasurementUnit: data.cartItem.amountSalesUnit.productMeasurementUnit,
+                            amountValue: data.cartItem.amountSalesUnit.value,
+                        },
+                    } only %}
+                {% endif %}
+
+                {% if data.cartItem.amountSalesUnit is empty and data.cartItem.quantitySalesUnit %}
+                    {% set value = data.cartItem.quantitySalesUnit.value %}
+                    {% set precision = data.cartItem.quantitySalesUnit.precision %}
+                    {% set salesUnitName = data.cartItem.quantitySalesUnit.productMeasurementUnit.name | default('') %}
+                    {% set salesUnitValue = value / precision %}
+
+                    <p><small class="text-secondary">[= {{ salesUnitValue | executeFilterIfExists('formatFloat', app.locale) }} {{ salesUnitName | trans }}]</small></p>
+                {% endif %}
+            </div>
+            <div class="{{ config.name }}__column {{ config.name }}__column--total col">
+                {% block sourcePriceForm %}
+                    {% set priceModeGross = 'GROSS_MODE' %}
+                    {% set originUnitPrice = (data.priceMode == priceModeGross) ? data.cartItem.originUnitGrossPrice : data.cartItem.originUnitNetPrice %}
+                    {% set isOriginPriceHidden = data.cartItem.unitPrice | money(true, data.currency.code) == originUnitPrice | money(true, data.currency.code) %}
+                    <div class="spacing-bottom text-right">
+                        <strong class="{{ isOriginPriceHidden ? 'is-hidden' }} spacing-right">
+                            <s class="text-big text-secondary">{{ originUnitPrice | money(true, data.currency.code) }}</s>
+                        </strong>
+                        <strong class="text-big">{{ data.cartItem.unitPrice | money(true, data.currency.code) }}</strong>
+                    </div>
+                {% endblock %}
+                <div class="box spacing spacing--inner grid grid--justify grid--middle">
+                    <strong class="col text-small">{{ 'cart.item.item_total' | trans }}: </strong>
+                    <strong class="col text-big">{{ data.cartItem.sumSubtotalAggregation | money(true, data.currency.code) }}</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

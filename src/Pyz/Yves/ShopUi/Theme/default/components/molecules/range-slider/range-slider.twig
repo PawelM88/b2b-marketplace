@@ -1,0 +1,12 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'range-slider',
+    tag: 'range-slider',
+} %}
+
+{% define attributes = {
+    'wrap-class-name': required,
+    'inputs-class-name': required,
+    'slider-config': '{"start":[1,999],"step":1,"connect":true,"margin":1,"range":{"min":1,"max":999}}',
+} %}

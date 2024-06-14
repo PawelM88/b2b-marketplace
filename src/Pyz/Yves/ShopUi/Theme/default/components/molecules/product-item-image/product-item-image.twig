@@ -1,0 +1,29 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'product-item-image',
+} %}
+
+{% define data = {
+    name: '',
+    image: '',
+} %}
+
+{% set modifiers = modifiers | default([]) %}
+
+{% block body %}
+    {% if data.image %}
+        {% include molecule('lazy-image') with {
+            class: 'col ' ~ config.name ~ '__item',
+            modifiers: modifiers | merge(['thumbnail']),
+            data: {
+                imageSrc: data.image,
+                imageTitle: data.name,
+            },
+        } only %}
+    {% else %}
+        <div class="{{ config.name }}__message grid grid--middle grid--center grid--expand">
+            <small>{{ 'global.no_image_available' | trans }}</small>
+        </div>
+    {% endif %}
+{% endblock %}

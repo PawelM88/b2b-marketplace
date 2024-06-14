@@ -1,0 +1,5 @@
+{% extends view('product-with-cms-block', '@SprykerShop:CmsBlockWidget') %}
+
+{% block body %}
+    {{ spyCmsBlock({ product: data.product }) }}
+{% endblock %}

@@ -1,0 +1,15 @@
+@mixin shop-ui-shopping-list-overview-table($name: '.shopping-list-overview-table') {
+    #{$name} {
+        th:first-child {
+            padding-left: rem(54);
+        }
+
+        tr:last-child {
+            border-bottom: 1px solid $setting-color-gray-6;
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-shopping-list-overview-table;

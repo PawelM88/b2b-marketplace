@@ -1,0 +1,22 @@
+{% extends molecule('search-cms-results', '@SprykerShop:CmsSearchPage') %}
+
+{% define config = {
+    tag: 'div',
+} %}
+
+{% block body %}
+    {% if data.pages %}
+        <ul class="{{ config.name }}__list">
+            {% for page in data.pages %}
+                <li class="{{ config.name }}__item">
+                    <a href="{{ page.url }}" class="{{ config.name }}__name spacing-y spacing-y--inner" title="{{ page.name }}">
+                        {{ page.name }}
+                    </a>
+                    <a href="{{ page.url }}" class="button">
+                        {{ 'global.search.results.view' | trans }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

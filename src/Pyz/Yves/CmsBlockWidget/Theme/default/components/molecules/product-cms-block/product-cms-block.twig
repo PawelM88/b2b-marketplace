@@ -1,0 +1,18 @@
+{% extends molecule('product-cms-block', '@SprykerShop:CmsBlockWidget') %}
+
+{% block body %}
+    {% set cmsContent = spyCmsBlock({ product: data.idProductAbstract }) %}
+    {% if cmsContent is not empty %}
+        {% embed molecule('content-collapser') with {
+            class: 'container',
+            modifiers: ['with-background'],
+            embed: {
+                content: cmsContent,
+            },
+        } only %}
+            {% block content %}
+                {{ embed.content | raw }}
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+{% endblock %}

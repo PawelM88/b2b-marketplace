@@ -1,0 +1,28 @@
+{% extends view('role-create', '@SprykerShop:CompanyPage') %}
+
+{% block companyContent %}
+    {% include molecule('action-bar') with {
+        data: {
+            title: 'company.account.company_role.create' | trans,
+        },
+    } only %}
+
+    {% include molecule('form') with {
+        modifiers: ['narrow'],
+        data: {
+            form: data.form,
+            shouldRequireMessage: true,
+            submit: {
+                enable: true,
+                class: 'form__action--expand-sm-md form__action--sm-md-first button',
+            },
+            cancel: {
+                enable: true,
+                url: url('company/company-role'),
+                text: 'general.back.button' | trans,
+                icon: null,
+                class: 'form__action--expand-sm-md button button--hollow',
+            },
+        },
+    } only %}
+{% endblock %}

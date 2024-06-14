@@ -1,0 +1,88 @@
+{% extends molecule('quick-order-row-partial', 'QuickOrderPage') %}
+
+{% define config = {
+    name: 'quick-order-row',
+    tag: 'quick-order-row',
+} %}
+
+{% define data = {
+    index: 0,
+    quantityField: required,
+    skuField: required,
+    product: null,
+    autocomplete: {
+        skuFieldName: required,
+        skuFieldValue: null,
+        searchFieldValue: null,
+        extraSearchFormElementClassName: '',
+    },
+    customFieldNamePattern: 'quick_order_form[items][' ~ data.index ~ '][%name%]',
+} %}
+
+{% define attributes = {
+    'autocomplete-form-class-name': required,
+    index: data.index,
+} %}
+
+{% block body %}
+    {% set autocomplete = data.autocomplete %}
+
+    {% include molecule('ajax-provider') with {
+        class: config.jsName ~ '__provider ' ~ config.jsName ~ '__provider-' ~ data.index,
+        attributes: {
+            url: path('quick-order/product-additional-data'),
+        },
+    } only %}
+
+    {% include molecule('ajax-renderer') with {
+        class: config.jsName ~ '__renderer',
+        attributes: {
+            'provider-class-name': config.jsName ~ '__provider-'  ~ data.index,
+            'target-class-name': config.jsName ~ '__target-' ~ data.index,
+            'mount-after-render': true,
+        },
+    } only %}
+
+    {% do data.skuField.setRendered %}
+
+    <div class="grid grid--justify grid--middle">
+        <div class="col col--sm-12 col--lg-4 spacing-y spacing-x spacing-x--inner">
+            {% block search %}
+                {% set skuFieldValue = (autocomplete.skuFieldValue | length > 1) ? autocomplete.skuFieldValue : data.skuField.vars.value %}
+                {% set searchFieldValue = (data.price is not null ) ?
+                    autocomplete.searchFieldValue :
+                    autocomplete.searchFieldValue | replace({'(': '', ')' : ''})
+                %}
+
+                {% widget 'ProductConcreteSearchWidget' args [
+                    'ajax-provider' ~ data.index,
+                    autocomplete.skuFieldName ~ '[sku]',
+                    skuFieldValue,
+                    searchFieldValue,
+                ] with {
+                    data: {
+                        injectorsExtraQueryValueClassName: autocomplete.extraSearchFormElementClassName,
+                    },
+                } only %}
+                {% endwidget %}
+            {% endblock %}
+        </div>
+
+        <div class="col col--sm-10 col--lg-7 {{ config.jsName }}__target {{ config.jsName }}__target-{{ data.index }}">
+            {{ parent() }}
+        </div>
+
+        <div class="col col--bottom col--sm-2 col--lg-1 text-right spacing-y spacing-y--big spacing-x spacing-x--inner">
+            {% block delete %}
+                <a href="#remove" class="js-quick-order-form__remove-row-trigger" data-row-index="{{ data.index }}">
+                    {% include atom('icon') with {
+                        modifiers: ['quick-order-delete-row'],
+                        data: {
+                            name: 'delete',
+                        },
+                    } only %}
+                </a>
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

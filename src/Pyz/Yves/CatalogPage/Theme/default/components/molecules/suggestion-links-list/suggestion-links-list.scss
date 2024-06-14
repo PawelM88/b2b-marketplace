@@ -1,0 +1,40 @@
+@mixin catalog-page-suggestion-links-list($name: '.suggestion-links-list') {
+    #{$name} {
+        &__title {
+            font-size: rem(17);
+            font-weight: fw(regular);
+            line-height: normal;
+            letter-spacing: rem(0.2);
+            padding: rem(26) 0 rem(6);
+            color: $setting-color-gray-4;
+
+            @include helper-breakpoint-media-min($lg) {
+                padding-bottom: rem(16);
+            }
+
+            &--bottom-indent {
+                padding-bottom: rem(16);
+            }
+        }
+
+        &__item {
+            font-size: rem(15);
+            font-weight: fw(regular);
+            line-height: rem(18);
+            letter-spacing: rem(0.1);
+            padding: 7px 0;
+        }
+
+        &__link {
+            color: $setting-color-gray-3;
+
+            &:hover {
+                color: $setting-color-gray-4;
+            }
+        }
+
+        @content;
+    }
+}
+
+@include catalog-page-suggestion-links-list();

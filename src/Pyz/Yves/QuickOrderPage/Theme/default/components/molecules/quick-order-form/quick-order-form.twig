@@ -1,0 +1,99 @@
+{% extends molecule('quick-order-form', '@SprykerShop:QuickOrderPage') %}
+
+{% block body %}
+    {% include molecule('ajax-provider') with {
+        class: config.jsName ~ '__provider ' ~ config.jsName ~ '__add-row-provider',
+        attributes: {
+            method: 'POST',
+            url: url('quick-order/add-rows')
+        }
+    } only %}
+
+    {% include molecule('ajax-provider') with {
+        class: config.jsName ~ '__provider ' ~ config.jsName ~ '__remove-row-provider',
+        attributes: {
+            method: 'POST',
+            url: url('quick-order/delete-row')
+        }
+    } only %}
+
+    {% include molecule('ajax-loader') with {
+        modifiers: ['big'],
+        attributes: {
+            'provider-class-name': config.jsName ~ '__provider',
+        },
+    } only %}
+
+    {% widget 'MerchantSearchWidget' with {
+        data: {
+            merchantsFormElementClassName: config.jsName ~ '__search-form-element',
+        },
+    } only %}{% endwidget %}
+
+    {% embed molecule('form') with {
+        data: {
+            form: data.form,
+            products: data.products,
+            prices: data.prices,
+            fileTemplateExtensions: data.fileTemplateExtensions,
+            options: {
+                attr: {
+                    class: config.jsName ~ '__form',
+                    'enctype': 'multipart/form-data'
+                }
+            },
+            textOrderForm: data.textOrderForm,
+            uploadOrderForm: data.uploadOrderForm
+        },
+        embed: {
+            name: config.name,
+            jsName: config.jsName,
+            additionalColumns: data.additionalColumns
+        }
+    } only %}
+        {% block fieldset %}
+            <div class="{{ config.name }}__fields grid">
+                {% block fields %}
+                    <div class="{{ config.name }}__field col col--sm-12 col--xl-9">
+                        <div class="{{embed.jsName}}__rows">
+                            {% include molecule('quick-order-rows', 'QuickOrderPage') with {
+                                data: {
+                                    rows: data.form.items,
+                                    products: data.products,
+                                    prices: data.prices,
+                                    additionalColumns: embed.additionalColumns,
+                                    extraSearchFormElementClassName: embed.jsName ~ '__search-form-element',
+                                },
+                            } only %}
+                        </div>
+
+                        {% include molecule('quick-order-form-actions', 'QuickOrderPage') with {
+                            class: 'grid grid--wide grid--justify spacing-top spacing-top--bigger',
+                            data: {
+                                addRowTriggerClass: embed.jsName ~ '__add-row-trigger',
+                            },
+                        } only %}
+                    </div>
+
+                    <div class="{{ config.name }}__field col col--top col--sm-12 col--xl-3">
+                        {% include molecule('quick-order-text-order-form', 'QuickOrderPage') with {
+                            data: {
+                                textOrderForm: data.textOrderForm,
+                            },
+                        } only %}
+
+                        {% include molecule('quick-order-file-upload', 'QuickOrderPage') with {
+                            class: 'spacing-top',
+                            data: {
+                                uploadOrderForm: data.uploadOrderForm,
+                                fileTemplateExtensions: data.fileTemplateExtensions,
+                            },
+                        } only %}
+                    </div>
+                {% endblock %}
+            </div>
+        {% endblock %}
+
+        {% block actions %}{% endblock %}
+    {% endembed %}
+{% endblock %}

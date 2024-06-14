@@ -1,0 +1,243 @@
+{% extends template('page-layout-cart', 'SprykerShop:CartPage') %}
+
+{% block breadcrumbs %}
+    {% set steps = [
+        {
+            label: 'multi_cart_widget.cart.carts' | trans,
+            url: url('multi-cart'),
+            isActive: false,
+        },
+        {
+            label: data.cart.name ?: data.title,
+            isActive: true,
+        },
+    ]%}
+
+    {% embed molecule('breadcrumb') with {
+        data: {
+            steps: steps,
+        },
+    } only %}
+        {% block breadcrumbs %}
+            {% for step in data.steps %}
+                {% set modifiers = step.isActive ? ['active'] : [] %}
+
+                {% include molecule('breadcrumb-step') with {
+                    modifiers: modifiers,
+                    data: {
+                        label: step.label,
+                        url: not step.isActive ? step.url,
+                        withChevron: not loop.last,
+                    },
+                } only %}
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block title %}{% endblock %}
+
+{% block contentClass %}page-layout-main page-layout-main--cart-page{% endblock %}
+
+{% block content %}
+    {% set isQuoteEnadled = data.cart.idQuote and data.isQuoteEditable %}
+    {% set productBundleItemCounterWidget = findWidget('ProductBundleItemCounterWidget', [data.cart]) %}
+    {% set transformedCartItems = productBundleItemCounterWidget.items | default(data.cartItems) %}
+
+    {% if data.cart.items is empty %}
+        {% block emptyCart %}
+            <div class="grid">
+                <div class="col col--xl-9">
+                    {% block emptyCartMessage %}
+                        <div class="text-center">
+                            {% include atom('icon') with {
+                                modifiers: ['biggest'],
+                                class: 'text-alt',
+                                data: {
+                                    name: 'shopping-cart',
+                                },
+                            } only %}
+                            <h6>{{ 'cart.empty' | trans }}</h6>
+                        </div>
+                    {% endblock %}
+                </div>
+                {% embed organism('cart-sidebar', 'CartPage') with {
+                    class: 'col col--xl-3',
+                    data: {
+                        cart: data.cart,
+                        cartItems: data.cartItems,
+                        isQuoteEditable: data.isQuoteEditable,
+                        isQuoteValid: data.isQuoteValid,
+                    },
+                } only %}
+                    {% block body %}
+                        {% if data.isQuoteEditable %}
+                            {% embed molecule('cart-sidebar-item', 'CartPage') with {
+                                data: {
+                                    title: 'cart.quick_add_to_cart' | trans,
+                                    cart: data.cart,
+                                    isAccordionItem: false,
+                                },
+                            } only %}
+                                {% block contentInner %}
+                                    {% widget 'ProductConcreteAddWidget' args [
+                                        '',
+                                        'cart.quick_add_to_cart.submit' | trans,
+                                        'cart/quick-add',
+                                        true,
+                                    ] only %}
+                                    {% endwidget %}
+                                {% endblock %}
+                            {% endembed %}
+                        {% endif %}
+
+                        {% if data.cart.idQuote is not empty %}
+                            {% embed molecule('cart-sidebar-item', 'CartPage') with {
+                                data: {
+                                    title: 'comment_widget.comments_to_cart' | trans,
+                                    cart: data.cart,
+                                    isAccordionItem: false,
+                                },
+                            } only %}
+                                {% block contentClasses %}{% endblock %}
+                                {% block contentInner %}
+                                    {% widget 'CommentThreadWidget' args [
+                                        data.cart.idQuote,
+                                        'quote',
+                                        app.request.requestUri,
+                                        data.cart.commentThread,
+                                    ] only %}
+                                    {% endwidget %}
+                                {% endblock %}
+                            {% endembed %}
+                        {% endif %}
+                    {% endblock %}
+                {% endembed %}
+            </div>
+        {% endblock %}
+    {% endif %}
+    {% if data.cart.items is not empty %}
+        {% set cartItemsCount = 0 %}
+        {% for cartItem in transformedCartItems %}
+            {% set cartItemsCount = cartItemsCount + cartItem.quantity %}
+        {% endfor %}
+        <div class="grid grid--gap">
+            <div class="col col--sm-12 col--xl-9">
+                <div class="cart-title">
+                    <h3 class="grid grid--nowrap grid--middle cart-title__text">
+                        {% block cartTitle %}
+                            {{ data.cart.name }}
+                            {% if isQuoteEnadled and can('ChangeCartItemPermissionPlugin', data.cart.idQuote) %}
+                                <a href="{{ path('multi-cart/update', {idQuote: data.cart.idQuote}) }}" class="col button button--hollow-icon button--edit cart-title__link">
+                                    {% include molecule('icon-tooltip') with {
+                                        modifiers: ['sm-lg-regular'],
+                                        data: {
+                                            icon: 'edit',
+                                            text: 'multi_cart_widget.cart.action.change_name' | trans,
+                                        },
+                                    } only %}
+                                    <span class="is-hidden-lg-xxl">{{ 'general.edit.button' | trans }}</span>
+                                </a>
+                            {% endif %}
+                        {% endblock %}
+                    </h3>
+                    <div class="grid grid--justify grid--middle">
+                        <div class="col col--sm-8">
+                            {% if data.cart.priceMode is not empty %}
+                                {% include molecule('price-mode') with {
+                                    modifiers: ['sm-lg-regular'],
+                                    data: {
+                                        priceMode: data.cart.priceMode,
+                                    },
+                                } only %}
+                            {% endif %}
+                        </div>
+                        <div class="col col--sm-2 text-right cart-title__quantity">{{ cartItemsCount | executeFilterIfExists('formatInt', app.locale) }} {{ 'checkout.step.summary.items' | trans }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col--sm-12 col--xl-9">
+                {% if data.isQuoteLocked %}
+                    {% include molecule('cart-locking', 'CartPage') with {
+                        data: {
+                            quoteApprovals: data.cart.quoteApprovals,
+                            quoteRequestVersionReference: data.cart.quoteRequestVersionReference,
+                        },
+                    } %}
+                {% endif %}
+
+                {% widget 'QuoteConfiguredBundleWidget' args [data.cart] with {
+                    data: {
+                        isEditable: data.isQuoteEditable,
+                    },
+                } only %}
+                {% endwidget %}
+
+                {% include molecule('cart-items-list', 'CartPage') with {
+                    data: {
+                        cart: data.cart,
+                        cartItems: transformedCartItems,
+                        isQuoteEditable: data.isQuoteEditable,
+                        attributes: data.attributes,
+                        isUpsellingProductsViaAjaxEnabled: data.isCartItemsViaAjaxLoadEnabled,
+                    },
+                } only %}
+
+                {% if isQuoteEnadled and can('RemoveCartItemPermissionPlugin') %}
+                    <div class="grid grid--right cart-bottom">
+                        {% widget 'CartOperationsWidget' args [data.cart] use view('cart-operations-actions', 'MultiCartWidget') only %}{% endwidget %}
+                    </div>
+                {% endif %}
+
+                {% if data.isQuoteEditable %}
+                    {% widget 'CartDiscountPromotionProductListWidget' args [
+                        data.cart,
+                        data.request,
+                    ] only %}
+                    {% endwidget %}
+                {% endif %}
+            </div>
+            {% block cartSidebar %}
+                {% include organism('cart-sidebar', 'CartPage') with {
+                    class: 'col col--sm-12 col--xl-3',
+                    data: {
+                        cart: data.cart,
+                        cartItems: data.cartItems,
+                        cartItemsCount: cartItemsCount,
+                        isQuoteEditable: data.isQuoteEditable,
+                        isQuoteValid: data.isQuoteValid,
+                    },
+                } only %}
+            {% endblock %}
+        </div>
+
+        {% if data.isQuoteEditable %}
+            {% include molecule('cart-upselling', 'CartPage') with {
+                data: {
+                    cart: data.cart,
+                    isUpsellingProductsViaAjaxEnabled: data.isUpsellingProductsViaAjaxEnabled,
+                },
+            } only %}
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block footer %}
+    {% cms_slot 'slt-1' %}
+
+    {% embed organism('footer') only %}
+        {% block logosInner %}
+            {% cms_slot 'slt-footer-partners' %}
+        {% endblock %}
+
+        {% block navigationInner %}
+            <div class="grid grid--gap">
+                {% cms_slot 'slt-footer-navigation' %}
+            </div>
+        {% endblock %}
+
+        {% block socialLinks %}
+            {% cms_slot 'slt-footer-social-links' %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

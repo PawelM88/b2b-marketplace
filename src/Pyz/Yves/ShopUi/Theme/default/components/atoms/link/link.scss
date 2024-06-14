@@ -1,0 +1,153 @@
+@include shop-ui-link {
+    &--icon {
+        display: flex;
+        align-items: center;
+        color: $setting-color-gray-3;
+        font-size: rem(13);
+        font-weight: fw(medium);
+        line-height: rem(16);
+
+        @include helper-breakpoint-media-min($xl) {
+            @include helper-effect-transition(color);
+        }
+
+        &:hover,
+        &:focus {
+            text-decoration: none;
+            color: $setting-color-gray-4;
+
+            .icon {
+                color: $setting-color-gray-4;
+            }
+        }
+    }
+
+    &--footer {
+        color: $setting-color-gray-3;
+        line-height: rem(30);
+
+        &:hover,
+        &:focus {
+            color: $setting-color-gray-4;
+        }
+    }
+
+    &--checkout {
+        font-size: rem(13);
+        line-height: normal;
+    }
+
+    &--social {
+        color: $setting-color-gray-4;
+
+        &:hover,
+        &:focus {
+            color: $setting-color-gray-3;
+        }
+    }
+
+    &--privacy {
+        color: $setting-color-white;
+
+        &:hover,
+        &:focus {
+            color: $setting-color-alt;
+        }
+    }
+
+    &--action {
+        color: $setting-color-gray-2;
+
+        &:hover,
+        &:focus {
+            color: $setting-color-gray-4;
+        }
+    }
+
+    &--error-block {
+        text-decoration: underline;
+        font: fw(regular) rem(15) / rem(30) $setting-font-family;
+        color: $setting-color-gray-2;
+    }
+
+    &--company-user {
+        color: $setting-color-gray-3;
+        white-space: nowrap;
+
+        @include helper-breakpoint-media-min($xl) {
+            @include helper-effect-transition(color);
+        }
+
+        &:focus,
+        &:hover {
+            text-decoration: none;
+            color: $setting-color-gray-5;
+        }
+    }
+
+    &--secondary {
+        color: $setting-color-gray-3;
+
+        @include helper-breakpoint-media-min($xl) {
+            @include helper-effect-transition(color);
+        }
+
+        &:hover {
+            text-decoration: none;
+            color: $setting-color-gray-4;
+        }
+    }
+
+    &--alternative {
+        color: $setting-color-black;
+
+        @include helper-breakpoint-media-min($xl) {
+            @include helper-effect-transition(color);
+        }
+
+        &:focus,
+        &:hover {
+            text-decoration: none;
+            color: $setting-color-gray-3;
+        }
+    }
+
+    &--additional {
+        color: $setting-color-main;
+
+        @include helper-breakpoint-media-min($xl) {
+            @include helper-effect-transition(color);
+        }
+
+        &:focus,
+        &:hover {
+            text-decoration: none;
+            color: $setting-color-gray-4;
+        }
+    }
+
+    &--to-button {
+        width: 100%;
+        padding: rem(11);
+        font-size: rem(14);
+        justify-content: center;
+        border-radius: $setting-border-radius;
+        border: rem(1) solid $setting-color-gray-1;
+
+        @include helper-breakpoint-media-min($lg) {
+            width: auto;
+            border: 0;
+            justify-content: flex-start;
+            padding: 0;
+            font-size: rem(13);
+        }
+    }
+
+    &--smaller {
+        font-size: rem(12);
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}

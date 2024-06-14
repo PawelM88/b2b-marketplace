@@ -1,0 +1,274 @@
+{% extends template('page-layout-shopping-list', 'ShoppingListPage') %}
+
+{% define data = {
+    title: _view.shoppingList.name,
+    form: _view.shoppingListForm,
+    shoppingList: _view.shoppingList,
+    shoppingListItemProducts: _view.productViewTransfers,
+    idShoppingList: _view.shoppingList.idShoppingList | default,
+} %}
+
+{% block breadcrumbs %}
+    {% include molecule('breadcrumb') with {
+        data: {
+            steps: [{
+                label: 'customer.account' | trans,
+            },{
+                label: 'customer.account.shopping_list' | trans,
+            },{
+                label: 'customer.account.shopping_list.overview.edit' | trans,
+            }],
+        },
+    } only %}
+{% endblock %}
+
+{% block customerNavigation %}
+    {% widget 'CustomerNavigationWidget' args ['shoppingList', data.idShoppingList] only %}{% endwidget %}
+{% endblock %}
+
+{% block customerContent %}
+    {% set hasWritePermission = can('WriteShoppingListPermissionPlugin', data.idShoppingList) %}
+
+    <div class="spacing-bottom spacing-bottom--bigger">
+        {% if can('WriteShoppingListPermissionPlugin', data.shoppingList.idShoppingList) %}
+            {% include molecule('shopping-list-product-quick-add', 'ShoppingListPage') with {
+                data: {
+                    activeShoppingListId: data.shoppingList.idShoppingList,
+                },
+            } only %}
+        {% endif %}
+    </div>
+
+    <div class="form" data-qa="component form">
+        {{ form_start(data.form) }}
+
+        {{ form_errors(data.form) }}
+
+        <div class="grid grid--bottom">
+            {{ form_row(data.form.idShoppingList) }}
+
+            {{ form_row(data.form.name, {
+                rowAttr: {
+                    class: 'col col--sm-12',
+                },
+            }) }}
+
+            <div class="col col--sm-12">
+                {% embed molecule('shopping-list-info', 'ShoppingListPage') with {
+                    data: {
+                        shoppingList: data.shoppingList
+                    }
+                } only %}
+                    {% block sharedBlock %}{% endblock %}
+                {% endembed %}
+            </div>
+
+            <div class="col col--sm-12">
+                {% if data.shoppingList.items is not empty %}
+                    {% for key, shoppingListItem in data.shoppingList.items %}
+                        {% set product = data.shoppingListItemProducts[shoppingListItem.idShoppingListItem] %}
+                        {% set isProductAvailable = product.available is defined and product.available and product.price is defined and product.price is not null %}
+
+                        {% set shoppingListMerchantWidget = findWidget('ShoppingListMerchantWidget', [product]) %}
+                        {% set shoppingListProductOfferWidget = findWidget('ShoppingListProductOfferWidget', [product]) %}
+
+                        {% if shoppingListProductOfferWidget and shoppingListProductOfferWidget.isProductOfferActive is not null %}
+                            {% set isProductAvailable = shoppingListProductOfferWidget.isProductOfferActive and isProductAvailable %}
+                        {% endif %}
+
+                        {% if shoppingListMerchantWidget and shoppingListMerchantWidget.isMerchantActive is not null %}
+                            {% set isProductAvailable = shoppingListMerchantWidget.isMerchantActive and isProductAvailable %}
+                        {% endif %}
+
+                        {% set productDiscontinuedWidget = findWidget('ProductDiscontinuedWidget', [product.sku]) %}
+
+                        {% if productDiscontinuedWidget %}
+                            {% set isProductAvailable = not productDiscontinuedWidget.isDiscontinued and isProductAvailable %}
+                        {% endif %}
+
+                        {% embed molecule('product-card-item') with {
+                            modifiers: ['shopping-list', isProductAvailable ? '' : 'hidden'],
+                            data: {
+                                listItem: product,
+                                form: data.form,
+                                imageModifiers: ['shopping-list'],
+                                canEdit: true,
+                            },
+                            embed: {
+                                key: key,
+                                isItemAvailable: isProductAvailable,
+                                idShoppingList: data.idShoppingList,
+                            },
+                        } only %}
+                            {% block title %}
+                                <span class="{{ config.name }}__available">
+                                    {% if embed.isItemAvailable %}
+                                        {{ 'customer.account.shopping_list.available' | trans }}
+                                    {% else %}
+                                        {% widget 'ProductDiscontinuedWidget' args [data.listItem.sku] only %}
+                                        {% nowidget %}
+                                            {{ 'customer.account.shopping_list.not_available' | trans }}
+                                        {% endwidget %}
+                                    {% endif %}
+                                </span>
+                                {{ parent() }}
+                            {% endblock %}
+
+                            {% block productConfiguration %}
+                                {% widget 'ProductConfigurationShoppingListItemDisplayWidget' args [data.listItem.shoppingListItem] only %}{% endwidget %}
+                                {% widget 'ProductConfigurationShoppingListPageButtonWidget' args [data.listItem.shoppingListItem] only %}{% endwidget %}
+                            {% endblock %}
+
+                            {% block itemAttributes %}
+                                {% include molecule('product-item-attributes') with {
+                                    class: 'spacing-y spacing-y--big text-small',
+                                    data: {
+                                        listItem: data.listItem,
+                                    },
+                                } only %}
+                            {% endblock %}
+
+                            {% block bundle %}{% endblock %}
+
+                            {% block note %}
+                                {% for subForm in data.form.items[embed.key].children  %}
+                                {% if not subForm.rendered %}
+                                    {% if subForm.vars.template_path is defined %}
+                                        {% include subForm.vars.template_path with {'form': subForm, 'rowClass': config.name ~ '__options-row'} %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            {% endblock %}
+
+                            {% block price %}
+                                {% if data.listItem.price is not empty %}
+                                    {% include molecule('money-price') with {
+                                        modifiers: ['medium', 'block', 'margin-bottom-from-tablet', 'gray-color'],
+                                        data: {
+                                            amount: data.listItem.price,
+                                            originalAmount: data.listItem.prices.ORIGINAL ?? null,
+                                        },
+                                    } only %}
+                                {% else %}
+                                    {{ 'product_alternative_widget.not_applicable' | trans }}
+                                {% endif %}
+                            {% endblock %}
+
+                            {% block quantity %}
+                                {% include molecule('quantity-counter') with {
+                                    modifiers: ['shopping-list'],
+                                    attributes: {
+                                        readonly: not embed.isItemAvailable,
+                                        name: data.form.items[embed.key].quantity.vars.full_name,
+                                        value: data.listItem.quantity,
+                                    },
+                                } only %}
+                            {% endblock %}
+
+                            {% block deleteButton %}
+                                <div class="col col--sm-12 grid grid--right">
+                                    {% set idShoppingListItem = data.listItem.idShoppingListItem %}
+
+                                    {% embed molecule('remote-form-submit') with {
+                                        data: {
+                                            label: 'customer.account.shopping_list.remove' | trans,
+                                            buttonClass: 'link link--icon ' ~ config.name ~ '__remove-button',
+                                            iconName: 'delete',
+                                        },
+                                        attributes: {
+                                            'form-name': 'removeItemForm_' ~ idShoppingListItem,
+                                            'form-action': path('shopping-list/remove-item', {'idShoppingList': embed.idShoppingList, 'idShoppingListItem': idShoppingListItem }),
+                                            'field-id': 'shopping_list_remove_item_form__token[removeItemForm_' ~ idShoppingListItem ~ ']',
+                                            'field-name': 'shopping_list_remove_item_form[_token]',
+                                            'field-value': csrf_token('shopping_list_remove_item_form'),
+                                        },
+                                        embed: {
+                                            name: config.name,
+                                        },
+                                    } only %}
+                                        {% block submitActionIcon %}
+                                            {% include atom('icon') with {
+                                                modifiers: ['link'],
+                                                data: {
+                                                    name: data.iconName,
+                                                },
+                                            } only %}
+                                        {% endblock %}
+
+                                        {% block innerSubmitActionContent %}
+                                            <span class="{{ embed.name }}__remove-button-text">
+                                                {{ 'customer.account.shopping_list.remove' | trans }}
+                                            </span>
+                                        {% endblock %}
+                                    {% endembed %}
+                                </div>
+                            {% endblock %}
+                        {% endembed %}
+
+                        {% set shoppingListProductAlternativeWidget = findWidget('ShoppingListProductAlternativeWidget', [product, data.shoppingList]) %}
+                        {% if can('WriteShoppingListPermissionPlugin', data.shoppingList.idShoppingList) and shoppingListProductAlternativeWidget %}
+                            {% widget shoppingListProductAlternativeWidget only %}{% endwidget %}
+                        {% endif %}
+                    {% endfor %}
+
+                    <div class="grid grid--right spacing-bottom spacing-bottom--biggest">
+                        {% embed molecule('remote-form-submit') with {
+                            class: 'col',
+                            data: {
+                                label: 'shopping_list.remove_all_items' | trans,
+                                buttonClass: 'link link--icon link--to-button grid grid--center spacing-top spacing-x spacing-x--inner spacing-x--big',
+                                iconName: 'delete',
+                            },
+                            attributes: {
+                                'form-name': 'clearForm',
+                                'form-action': path('shopping-list/clear', { idShoppingList: data.idShoppingList }),
+                                'field-id': 'shopping_list_remove_item_form__token[clearForm]',
+                                'field-name': 'shopping_list_clear_form[_token]',
+                                'field-value': csrf_token('shopping_list_clear_form'),
+                            },
+                        } only %}
+                            {% block submitActionIcon %}
+                                {% include atom('icon') with {
+                                    modifiers: ['link'],
+                                    data: {
+                                        name: data.iconName,
+                                    },
+                                } only %}
+                            {% endblock %}
+                        {% endembed %}
+                    </div>
+                {% else %}
+                    <div class="col col--sm-12 text-center">
+                        {{ 'customer.account.shopping_list.empty' | trans }}
+                    </div>
+                {% endif %}
+                <div class="col col--sm-12">
+                    {% widget 'ShoppingListSubtotalWidget' args [data.shoppingListItemProducts] only %}{% endwidget %}
+                </div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="col col--sm-6 text-left spacing-right spacing-right--inner spacing-right--small">
+                <a class="button button--alert button--hollow button--expand-sm-lg spacing-bottom spacing-right" href="{{ path('shopping-list/delete/confirm', {idShoppingList: data.idShoppingList}) }}">
+                    {{ 'customer.account.shopping_list.overview.delete' | trans }}
+                </a>
+            </div>
+            <div class="col col--sm-6 col--lg-4 text-right spacing-left spacing-left--inner spacing-left--small">
+                <a href="{{ path('shopping-list/details', {idShoppingList: data.idShoppingList}) }}" class="button button--hollow button--expand-sm-lg spacing-bottom">
+                    {{ 'general.back.button' | trans }}
+                </a>
+
+            </div>
+            <div class="col col--sm-12 col--lg-2 text-right">
+                <button type="submit" class="button button--success button--expand-sm-lg">
+                    {{ 'forms.submit-btn' | trans }}
+                </button>
+            </div>
+        </div>
+
+        {% do data.form.items.setRendered %}
+
+        {{ form_end(data.form) }}
+    </div>
+{% endblock %}

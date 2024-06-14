@@ -1,0 +1,57 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'product-alternative-slider'
+} %}
+
+{% define data = {
+    products: required
+} %}
+
+{% block body %}
+    <h2 class="{{ config.name }}__title title title--h4">
+        {{ 'product_alternative_widget.product_alternative' | trans }}
+    </h2>
+
+    {% embed molecule('slick-carousel') with {
+        modifiers: ['full-width', 'equal-height', 'products', 'full-height'],
+        data: {
+            slides: data.products
+        },
+        attributes: {
+            'slider-config': '{
+                "slidesToShow": 4,
+                "slidesToScroll": 1,
+                "dots": false,
+                "infinite": false,
+                "responsive": [{
+                     "breakpoint": 1024,
+                     "settings": {
+                         "slidesToShow": 3
+                     }
+                },
+                {
+                     "breakpoint": 768,
+                     "settings": {
+                         "slidesToShow": 2,
+                         "infinite": true
+                     }
+                },
+                {
+                     "breakpoint": 550,
+                     "settings": {
+                         "slidesToShow": 1,
+                         "infinite": true
+                     }
+                }]
+            }'
+        }
+    } only %}
+        {% block slides %}
+            {% for slide in data.slides %}
+                {% widget 'ProductAlternativeWidget' args [slide] %}{% endwidget %}
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

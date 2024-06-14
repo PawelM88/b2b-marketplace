@@ -1,0 +1,10 @@
+{% extends template('navigation-providers-payment', '@SprykerShop:NavigationWidget') %}
+
+{% block body %}
+    {% include molecule('navigation-icon-list') with {
+        modifiers: ['footer'],
+        data: {
+            nodes: data.nodes,
+        },
+    } only %}
+{% endblock %}

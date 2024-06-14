@@ -1,0 +1,57 @@
+@mixin helper-color-selector($name) {
+    #{$name} {
+        cursor: default;
+        display: flex;
+
+        &__item {
+            border-radius: 100%;
+            vertical-align: middle;
+            position: relative;
+
+            &:not(:last-child) {
+                margin-right: rem(4);
+            }
+
+            &:hover #{$name}__tooltip {
+                transform: scale(1);
+            }
+        }
+
+        &__item-inner {
+            display: block;
+            width: rem(10);
+            height: rem(10);
+            border-radius: 100%;
+            pointer-events: none;
+        }
+
+        &__tooltip {
+            @include helper-effect-transition(all);
+            transform: scale(0);
+            transform-origin: bottom;
+            position: absolute;
+            top: rem(-43);
+            left: rem(-15);
+            background: $setting-color-gray-5;
+            color: $setting-color-white;
+            font-size: rem(16);
+            padding: rem(5) rem(11) rem(7) rem(10);
+            white-space: nowrap;
+            border-radius: $setting-border-radius;
+
+            &::before {
+                content: '';
+                position: absolute;
+                left: rem(17);
+                bottom: rem(-4);
+                border-radius: $setting-border-radius;
+                background: $setting-color-gray-5;
+                width: rem(10);
+                height: rem(10);
+                transform: rotate(45deg);
+            }
+        }
+
+        @content;
+    }
+}

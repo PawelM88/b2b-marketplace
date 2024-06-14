@@ -1,0 +1,103 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'mini-cart-detail',
+} %}
+
+{% define data = {
+    cart: required,
+    total: data.cart.totals.grandTotal | default(0),
+} %}
+
+{% set itemCount = data.cart.items | length %}
+
+{% block body %}
+    <div class="grid grid--nowrap">
+        <div class="col">
+            {% include molecule('mini-cart-radio', 'MultiCartWidget') with {
+                class: 'spacing-right spacing-top spacing-top--big',
+                data: {
+                    idCart: data.cart.idQuote,
+                    isDefault: data.cart.isDefault,
+                }
+            } only %}
+        </div>
+        <div class="col col--expand">
+            <div class="grid grid--nowrap">
+                <div class="col col--sm-8 col--md-9">
+                    {% if data.cart.isDefault %}
+                        <a class="{{ config.name }}__title grid grid--nowrap" href="{{ path('cart') }}">
+                            <strong class="col {{ config.name }}__name">{{ data.cart.name }}</strong>
+                            <span class="col {{ config.name }}__marker">
+                                ({{ 'multi_cart_widget.cart.default' | trans }})
+                            </span>
+                        </a>
+                    {% else %}
+                        {% embed molecule('single-button-form') with {
+                            data: {
+                                formAction: path('multi-cart/set-default', {idQuote: data.cart.idQuote}),
+                                buttonText: data.cart.name,
+                                buttonClass: config.name ~ '__title',
+                                fieldName: 'multi_cart_set_default_form[_token]',
+                                fieldValue: csrf_token('multi_cart_set_default_form'),
+                                iconName: '',
+                            },
+                            embed: {
+                                name: config.name,
+                            },
+                        } only %}
+                            {% block text %}
+                                <strong class="{{ embed.name }}__name">{{ data.buttonText }}</strong>
+                            {% endblock %}
+                        {% endembed %}
+                    {% endif %}
+                </div>
+                <div class="col col--sm-4 col--md-3 text-right">
+                    <div class="grid grid--right">
+                        {% if widgetGlobalExists('QuoteApprovalStatusWidget') %}
+                            {% widget 'QuoteApprovalStatusWidget' args [data.cart] only %}
+                                {% block body %}
+                                    {% include molecule('quote-status') with {
+                                        class: 'col',
+                                        modifiers: [_widget.quoteStatus | lower, 'small'],
+                                        data: {
+                                            quoteStatus: _widget.quoteStatus
+                                        }
+                                    } only %}
+                                {% endblock %}
+                            {% endwidget %}
+                        {% endif %}
+                        <span class="col">
+                           {{ data.total | money(true, data.cart.currency.code) }}<br>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="{{ config.name }}__info grid grid--middle">
+                <div class="col grid grid--nowrap grid--middle">
+                    {% widget 'ProductBundleItemCounterWidget' args [data.cart] with {
+                        configName: config.name
+                    } only %}
+                        {% block body %}
+                            <span class="{{ configName }}__quantity">
+                                {{ parent() }}
+                            </span>
+                        {% endblock %}
+                    {% endwidget %}
+                    <span class="spacing-right spacing-right--big">
+                        {% widget 'SharedCartPermissionGroupWidget' args [data.cart] only %}{% endwidget %}
+                    </span>
+                </div>
+                {% if data.cart.priceMode is not empty %}
+                    {% include molecule('price-mode') with {
+                        class: config.name ~ '__price-mode col',
+                        modifiers: ['small'],
+                        data: {
+                            priceMode: data.cart.priceMode
+                        }
+                    } only %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

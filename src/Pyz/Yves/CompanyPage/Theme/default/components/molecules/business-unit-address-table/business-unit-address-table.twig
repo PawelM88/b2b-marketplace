@@ -1,0 +1,56 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'business-unit-address-table'
+} %}
+
+{% define data = {
+    idCompanyBusinessUnit: required,
+    addresses: required,
+    headline: null
+} %}
+
+{% block body %}
+    <table class="table table--expand table--responsive">
+        {% if data.headline %}
+            <thead>
+                <tr class="transform-table-header">
+                    <th class="transform-table-header__cell">{{ data.headline }}</th>
+                    <th></th>
+                </tr>
+            </thead>
+        {% endif %}
+        <tbody>
+        {% for address in data.addresses %}
+            <tr>
+                <td class="transform-cell transform-cell--no-label spacing-y spacing-y--inner spacing-y--big">
+                    {{ form_widget(address, {
+                            'attr': {
+                                'label': address.vars.label
+                            }
+                        })
+                    }}
+                </td>
+                <td class="table__actions">
+                    {% include molecule('table-action-list') with {
+                        data: {
+                            items: [
+                                {
+                                    url: url('company/address/update', {'id': address.vars.value, 'idCompanyBusinessUnit': data.idCompanyBusinessUnit }),
+                                    icon: 'edit',
+                                    title: 'company.account.address.edit'
+                                },
+                                {
+                                    url: url('company/address/delete-confirmation', {'id': address.vars.value, 'idCompanyBusinessUnit': data.idCompanyBusinessUnit }),
+                                    icon: 'delete',
+                                    title: 'company.account.address.delete'
+                                }
+                            ]
+                        }
+                    } only %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

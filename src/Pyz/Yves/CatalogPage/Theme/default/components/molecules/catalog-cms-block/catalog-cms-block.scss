@@ -1,0 +1,94 @@
+.catalog-cms-block {
+    & > * {
+        font: fw(medium) rem(18) / rem(23) $setting-font-family;
+    }
+
+    p {
+        font-size: rem(15);
+        line-height: rem(22);
+        font-weight: fw(regular);
+        color: $setting-color-gray-2;
+        margin-top: rem(10);
+    }
+
+    a {
+        color: $setting-color-gray-3;
+
+        &:hover,
+        &:focus {
+            color: $setting-color-main;
+        }
+    }
+
+    hr {
+        display: none;
+    }
+
+    &--sidebar {
+        margin-top: rem(48);
+
+        p {
+            text-shadow: 0 rem(2) rem(4) $setting-color-shadow-1;
+        }
+    }
+
+    &--filter-sidebar {
+        display: none;
+
+        @include helper-breakpoint-media-min($lg) {
+            display: block;
+        }
+    }
+
+    &--bottom {
+        text-align: center;
+
+        & > * {
+            font-size: rem(32);
+            line-height: rem(41);
+
+            &:first-child {
+                margin-top: 0;
+            }
+        }
+
+        h2 {
+            color: $setting-color-gray-5;
+            font-size: rem(28);
+            line-height: 1.2;
+            margin-bottom: rem(16);
+
+            @include helper-breakpoint-media-min($lg) {
+                font-size: rem(30);
+            }
+
+            @include helper-breakpoint-media-min($xl) {
+                font-size: rem(32);
+                line-height: rem(41);
+                margin-bottom: rem(24);
+            }
+        }
+
+        p {
+            font-size: rem(15);
+            color: $setting-color-gray-2;
+            line-height: 1.61;
+            max-width: rem(970);
+            margin: 0 auto rem(26);
+
+            @include helper-breakpoint-media-min($lg) {
+                font-size: rem(18);
+                margin-bottom: rem(40);
+            }
+        }
+    }
+
+    &-wrap {
+        background-color: $setting-color-gray-7;
+        padding: rem(32) 0 rem(16);
+
+        @include helper-breakpoint-media-min($lg) {
+            padding: rem(50) 0 rem(38);
+        }
+    }
+}

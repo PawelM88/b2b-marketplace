@@ -1,0 +1,19 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'quantity-option',
+    tag: 'small',
+} %}
+
+{% define data = {
+    value: required,
+    precision: required,
+    optionName: '',
+} %}
+
+{% block body %}
+    {{ 'quantity_option.amount' | trans({
+        '%value%': (data.value / data.precision) | round | executeFilterIfExists('formatFloat', app.locale),
+        '%name%': data.optionName,
+    }) }}
+{% endblock %}
