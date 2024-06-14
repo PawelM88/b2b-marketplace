@@ -56,5 +56,8 @@
     <rule ref="SlevomatCodingStandard.Functions.DisallowTrailingCommaInClosureUse">
         <severity>0</severity>
     </rule>
+    <rule ref="Spryker.Commenting.FileDocBlock">
+        <severity>0</severity>
+    </rule>
 
 </ruleset>
