@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\Mail;
 
+use Pyz\Zed\MerchantPage\Communication\Plugin\Mail\ContactFormMailTypeBuilderPlugin;
 use Spryker\Zed\AvailabilityNotification\Communication\Plugin\Mail\AvailabilityNotificationMailTypeBuilderPlugin;
 use Spryker\Zed\AvailabilityNotification\Communication\Plugin\Mail\AvailabilityNotificationSubscriptionMailTypeBuilderPlugin;
 use Spryker\Zed\AvailabilityNotification\Communication\Plugin\Mail\AvailabilityNotificationUnsubscribedMailTypeBuilderPlugin;
@@ -86,6 +87,7 @@ class MailDependencyProvider extends SprykerMailDependencyProvider
             new AvailabilityNotificationMailTypeBuilderPlugin(),
             new MerchantUserPasswordResetMailTypeBuilderPlugin(),
             new OrderInvoiceMailTypeBuilderPlugin(),
+            new ContactFormMailTypeBuilderPlugin(), #MerchantPageFeature
         ];
     }
 }

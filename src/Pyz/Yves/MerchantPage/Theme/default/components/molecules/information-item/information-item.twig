@@ -3,7 +3,9 @@
 {% block extraClass %}{% endblock %}
 
 {% block title %}
-    <h5 class="spacing-bottom">{{ data.title }}</h5>
+    {% set titleClassName = config.name ~ '__title' %}
+
+    {{ parent() }}
 {% endblock %}
 
 {% block text %}

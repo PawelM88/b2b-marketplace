@@ -1,0 +1,54 @@
+{% extends view('merchant-page', '@SprykerShop:MerchantPage') %}
+
+{% define data = {
+    form: {
+        contactForm: _view.contactForm,
+    },
+    title: 'merchant.profile.contact_form' | trans,
+} %}
+
+{% block breadcrumbs %}
+    <div class="container">
+        <div class="container__inner">{{ parent() }}</div>
+    </div>
+{% endblock %}
+
+{% block title %}
+    <div class="container">
+        <div class="container__inner">
+            <h2 class="spacing-top spacing-top--big">{{ merchantName }}</h2>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    {% include molecule('merchant-profile', 'MerchantProfileWidget') ignore missing with {
+        data: {
+            merchantStorageProfile: data.merchant.merchantProfile | default,
+            idMerchant: data.merchant.idMerchant | default,
+            merchantReference: data.merchant.merchantReference,
+            merchantName: merchantName,
+        },
+    } only %}
+
+    {% block contactForm %}
+        {% include molecule('form') with {
+            class: 'box spacing-bottom spacing-bottom--big',
+            data: {
+                title: 'merchant_page.contact_form.contact_form' | trans,
+                form: data.form.contactForm,
+                layout: {
+                    salutation: 'col col--sm-12 col--lg-2',
+                    first_name: 'col col--sm-12 col--lg-5',
+                    last_name: 'col col--sm-12 col--lg-5',
+                    phone_number: 'col col--sm-12 col--lg-4',
+                    email: 'col col--sm-12 col--lg-8'
+                },
+                submit: {
+                    enable: true,
+                    text: 'merchant_page.contact_form.submit' | trans
+                },
+            }
+        } only %}
+    {% endblock %}
+{% endblock %}

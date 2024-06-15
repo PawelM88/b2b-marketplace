@@ -1,11 +1,17 @@
 @mixin merchant-page-information-item($name: '.information-item') {
     #{$name} {
-        margin-bottom: rem(16);
+        margin-bottom: rem(18);
+
+        &__title {
+            font: fw(medium) rem(16) / rem(22) $setting-font-family-additional;
+            letter-spacing: rem(0.27);
+            margin-bottom: rem(8);
+            display: block;
+        }
 
         &__text {
-            color: $setting-color-gray-2;
-            line-height: rem(29);
-            word-break: break-word;
+            font: fw(light) rem(16) / rem(22) $setting-font-family;
+            letter-spacing: rem(0.2);
         }
 
         @content;
