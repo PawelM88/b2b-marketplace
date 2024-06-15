@@ -1111,6 +1111,14 @@ mail.newsletter.unsubscribed.subject,"Schade, dass Sie uns verlassen…",de_DE
 mail.newsletter.unsubscribed.subject,Sorry to see you go…,en_US
 mail.newsletter.unsubscribed.text,Ihre E-Mail-Adresse wurde vom Spryker Shop Newsletter abgemeldet. Sie können sich jederzeit wieder über Ihr Kundenkonto anmelden.,de_DE
 mail.newsletter.unsubscribed.text,"Your email address has been unsubscribed from Spryker Shop newsletter, but you can always manage your subscription in your customer profile.",en_US
+mail.new.order.subject,Neue Bestellung im Spryker Shop aufgegeben,de_DE
+mail.new.order.subject,New order placed at Spryker Shop,en_US
+mail.payment.confirmation.subject,Zahlungsbestätigung für Einkäufe im Spryker Shop,de_DE
+mail.payment.confirmation.subject,Payment confirmation for purchases at Spryker Shop,en_US
+mail.order.shipped.by.merchant.subject,Die im Spryker Shop aufgegebene Bestellung wurde versendet,de_DE
+mail.order.shipped.by.merchant.subject,The order placed at Spryker Shop has been sent,en_US
+mail.cancel.order.subject,Die im Spryker Shop aufgegebene Bestellung wurde storniert,de_DE
+mail.cancel.order.subject,The order placed at Spryker Shop has been canceled,en_US
 mail.order.confirmation.subject,Vielen Dank für deine Bestellung beim Spryker Shop,de_DE
 mail.order.confirmation.subject,Thank you for your order at Spryker Shop,en_US
 mail.order.confirmation.salutation,Hallo,de_DE

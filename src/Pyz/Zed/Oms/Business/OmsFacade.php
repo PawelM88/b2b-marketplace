@@ -9,6 +9,7 @@ namespace Pyz\Zed\Oms\Business;
 
 use Generated\Shared\Transfer\TimeoutProcessorTimeoutRequestTransfer;
 use Generated\Shared\Transfer\TimeoutProcessorTimeoutResponseTransfer;
+use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Zed\Oms\Business\OmsFacade as SprykerOmsFacade;
 
 /**
@@ -31,5 +32,20 @@ class OmsFacade extends SprykerOmsFacade implements OmsFacadeInterface
         TimeoutProcessorTimeoutRequestTransfer $timeoutProcessorTimeoutRequestTransfer,
     ): TimeoutProcessorTimeoutResponseTransfer {
         return $this->getFactory()->createInitiationTimeoutCalculator()->calculateTimeout($timeoutProcessorTimeoutRequestTransfer);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     * @param string $mailTypeBuilderPlugin
+     *
+     * @return void
+     */
+    public function sendMessage(SpySalesOrder $orderEntity, string $mailTypeBuilderPlugin): void
+    {
+        $this->getFactory()->createMailHandler()->sendMail($orderEntity, $mailTypeBuilderPlugin);
     }
 }

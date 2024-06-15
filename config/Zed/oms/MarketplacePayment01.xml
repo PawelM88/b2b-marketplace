@@ -1,20 +1,20 @@
 <?xml version="1.0"?>
 <statemachine
-    xmlns="spryker:oms-01"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd"
+        xmlns="spryker:oms-01"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd"
 >
 
     <process name="MarketplacePayment01" main="true">
         <states>
-            <state name="new" reserved="true" display="oms.state.new">
+            <state name="new" reserved="true" display="oms.state.new"/>
+            <state name="new order mail sent" reserved="true" display="oms.state.new">
                 <flag>cancellable</flag>
             </state>
             <state name="paid" reserved="true" display="oms.state.paid"/>
             <state name="canceled" display="oms.state.canceled"/>
             <state name="refunded" display="oms.state.refunded"/>
             <state name="merchant split pending" reserved="true" display="oms.state.merchant-split-pending"/>
-            <state name="tax invoice submitted" reserved="true" display="oms.state.paid"/>
             <state name="sent to merchant" reserved="true" display="oms.state.sent-to-merchant"/>
             <state name="shipped by merchant" reserved="true" display="oms.state.shipped-by-merchant"/>
             <state name="delivered" reserved="true" display="oms.state.delivered"/>
@@ -24,24 +24,24 @@
         <transitions>
             <transition happy="true">
                 <source>new</source>
+                <target>new order mail sent</target>
+                <event>new order mail send</event>
+            </transition>
+
+            <transition happy="true">
+                <source>new order mail sent</source>
                 <target>paid</target>
                 <event>pay</event>
             </transition>
 
             <transition>
-                <source>new</source>
+                <source>new order mail sent</source>
                 <target>canceled</target>
                 <event>cancel</event>
             </transition>
 
             <transition happy="true" condition="MerchantSalesOrder/IsOrderPaid">
                 <source>paid</source>
-                <target>tax invoice submitted</target>
-                <event>submit tax invoice</event>
-            </transition>
-
-            <transition happy="true">
-                <source>tax invoice submitted</source>
                 <target>merchant split pending</target>
             </transition>
 
@@ -91,16 +91,15 @@
                 <target>closed</target>
                 <event>close</event>
             </transition>
-
         </transitions>
 
         <events>
-            <event name="pay" manual="true" command="Order/RequestProductReviews"/>
-            <event name="cancel" manual="true"/>
+            <event name="new order mail send" onEnter="true" command="Oms/SendNewOrderMessage"/>
+            <event name="pay" manual="true" command="Oms/SendPaymentConfirmationMessage"/>
+            <event name="cancel" manual="true" command="Oms/SendCancelOrderMessage"/>
             <event name="refund" manual="true"/>
             <event name="send to merchant" onEnter="true" command="MerchantSalesOrder/CreateOrders"/>
-            <event name="submit tax invoice" onEnter="true" command="TaxApp/SubmitPaymentTaxInvoice"/>
-            <event name="ship by merchant"/>
+            <event name="ship by merchant" command="MerchantOms/SendOrderShippedByMerchantMessage"/>
             <event name="deliver"/>
             <event name="close" manual="true" command="MerchantOms/CloseOrderItem"/>
         </events>
@@ -109,6 +108,7 @@
             <process>MarketplaceReturn</process>
             <process>MarketplaceRefund</process>
         </subprocesses>
+
     </process>
 
     <process name="MarketplaceReturn" file="MarketplaceSubprocess/MarketplaceReturn01.xml"/>

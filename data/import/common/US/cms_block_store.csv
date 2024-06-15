@@ -50,3 +50,11 @@ cms-block-email--merchant_relation_request_status_change--html,US
 cms-block-email--merchant_relation_request_status_change--text,US
 cms-block-email--merchant_relationship_delete--html,US
 cms-block-email--merchant_relationship_delete--text,US
+cms-block-email--new-order--html,US
+cms-block-email--new-order--text,US
+cms-block-email--payment-confirmation--html,US
+cms-block-email--payment-confirmation--text,US
+cms-block-email--order-shipped-by-merchant--html,US
+cms-block-email--order-shipped-by-merchant--text,US
+cms-block-email--cancel-order--html,US
+cms-block-email--cancel-order--text,US

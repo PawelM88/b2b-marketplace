@@ -9,9 +9,13 @@ namespace Pyz\Zed\Oms;
 
 use Pyz\Zed\MerchantOms\Communication\Plugin\Oms\CloseMerchantOrderItemCommandPlugin;
 use Pyz\Zed\MerchantOms\Communication\Plugin\Oms\ReturnMerchantOrderItemCommandPlugin;
+use Pyz\Zed\MerchantOms\Communication\Plugin\Oms\SendOrderShippedByMerchantMessagePlugin;
 use Pyz\Zed\MerchantSalesOrder\Communication\Plugin\Oms\Condition\IsOrderPaidConditionPlugin;
 use Pyz\Zed\MerchantSalesOrder\Communication\Plugin\Oms\CreateMerchantOrdersCommandPlugin;
 use Pyz\Zed\Oms\Communication\Plugin\Oms\InitiationTimeoutProcessorPlugin;
+use Pyz\Zed\Oms\Communication\Plugin\Oms\SendCancelOrderMessagePlugin;
+use Pyz\Zed\Oms\Communication\Plugin\Oms\SendNewOrderMessagePlugin;
+use Pyz\Zed\Oms\Communication\Plugin\Oms\SendPaymentConfirmationMessagePlugin;
 use Spryker\Zed\Availability\Communication\Plugin\Oms\AvailabilityReservationPostSaveTerminationAwareStrategyPlugin;
 use Spryker\Zed\DummyPayment\Communication\Plugin\Oms\Command\RefundPlugin;
 use Spryker\Zed\Kernel\Container;
@@ -208,6 +212,10 @@ class OmsDependencyProvider extends SprykerOmsDependencyProvider
             $commandCollection->add(new SendRefundPaymentMessageCommandPlugin(), 'Payment/Refund');
             $commandCollection->add(new SendCancelPaymentMessageCommandPlugin(), 'Payment/Cancel');
             $commandCollection->add(new RefundCommandPlugin(), 'Payment/Refund/Confirm');
+            $commandCollection->add(new SendNewOrderMessagePlugin(), 'Oms/SendNewOrderMessage'); // SendNewOrderMessagePluginFeature
+            $commandCollection->add(new SendPaymentConfirmationMessagePlugin(), 'Oms/SendPaymentConfirmationMessage'); // SendPaymentConfirmationMessagePluginFeature
+            $commandCollection->add(new SendOrderShippedByMerchantMessagePlugin(), 'MerchantOms/SendOrderShippedByMerchantMessage'); // SendOrderShippedByMerchantMessagePluginFeature
+            $commandCollection->add(new SendCancelOrderMessagePlugin(), 'Oms/SendCancelOrderMessage'); // SendCancelOrderMessagePluginFeature
 
             return $commandCollection;
         });

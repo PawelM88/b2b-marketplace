@@ -7,6 +7,10 @@
 
 namespace Pyz\Zed\Mail;
 
+use Pyz\Zed\MerchantOms\Communication\Plugin\Mail\OrderShippedByMerchantMailTypeBuilderPlugin;
+use Pyz\Zed\Oms\Communication\Plugin\Mail\CancelOrderMailTypeBuilderPlugin;
+use Pyz\Zed\Oms\Communication\Plugin\Mail\NewOrderMailTypeBuilderPlugin;
+use Pyz\Zed\Oms\Communication\Plugin\Mail\PaymentConfirmationMailTypeBuilderPlugin;
 use Spryker\Zed\AvailabilityNotification\Communication\Plugin\Mail\AvailabilityNotificationMailTypeBuilderPlugin;
 use Spryker\Zed\AvailabilityNotification\Communication\Plugin\Mail\AvailabilityNotificationSubscriptionMailTypeBuilderPlugin;
 use Spryker\Zed\AvailabilityNotification\Communication\Plugin\Mail\AvailabilityNotificationUnsubscribedMailTypeBuilderPlugin;
@@ -86,6 +90,10 @@ class MailDependencyProvider extends SprykerMailDependencyProvider
             new AvailabilityNotificationMailTypeBuilderPlugin(),
             new MerchantUserPasswordResetMailTypeBuilderPlugin(),
             new OrderInvoiceMailTypeBuilderPlugin(),
+            new NewOrderMailTypeBuilderPlugin(), // NewOrderMailTypeBuilderPluginFeature
+            new PaymentConfirmationMailTypeBuilderPlugin(), // PaymentConfirmationMailTypeBuilderPluginFeature
+            new OrderShippedByMerchantMailTypeBuilderPlugin(), // OrderShippedByMerchantMailTypeBuilderPluginFeature
+            new CancelOrderMailTypeBuilderPlugin(), // CancelOrderMailTypeBuilderPluginFeature
         ];
     }
 }
