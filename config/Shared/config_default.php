@@ -149,6 +149,7 @@ $config[KernelConstants::PROJECT_NAMESPACES] = [
 ];
 $config[KernelConstants::CORE_NAMESPACES] = [
     'SprykerShop',
+    'SprykerMiddleware',
     'SprykerEco',
     'Spryker',
     'SprykerSdk',

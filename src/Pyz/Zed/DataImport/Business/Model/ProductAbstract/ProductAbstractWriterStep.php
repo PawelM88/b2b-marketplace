@@ -14,7 +14,7 @@ use Orm\Zed\ProductCategory\Persistence\SpyProductCategoryQuery;
 use Orm\Zed\Url\Persistence\SpyUrlQuery;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Pyz\Zed\DataImport\Business\Model\Product\ProductLocalizedAttributesExtractorStep;
-use Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository;
+use Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepositoryInterface;
 use Spryker\Zed\DataImport\Business\Exception\DataKeyNotFoundInDataSetException;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
@@ -116,16 +116,10 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
     public const KEY_NEW_TO = 'new_to';
 
     /**
-     * @var \Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository
+     * @param \Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepositoryInterface $productRepository
      */
-    protected $productRepository;
-
-    /**
-     * @param \Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository $productRepository
-     */
-    public function __construct(ProductRepository $productRepository)
+    public function __construct(protected ProductRepositoryInterface $productRepository)
     {
-        $this->productRepository = $productRepository;
     }
 
     /**

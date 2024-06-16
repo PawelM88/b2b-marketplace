@@ -1,0 +1,7 @@
+{"type":"przewody","sku":"cable test 1","kolor":"red","name":[{"locale":"en","name":"Test Cable 1"},{"locale":"de","name":"Tst Kabel 1"}],"desc":"Sample description of test cable 1.","brand":"HP"}
+{"type":"przewody","sku":"cable#test#2","kolor":"red","name":[{"locale":"en","name":"Test Cable 2"},{"locale":"de","name":"Tst Kabel 2"}],"desc":"Sample description of test cable 2.","brand":"HP"}
+{"type":"przewody","sku":"cable test 3","kolor":"green","name":[{"locale":"en","name":"Test Cable 3"},{"locale":"de","name":"Tst Kabel 3"}],"desc":"Very long item description that has over 100 chars. For some made-up reasons, such long descriptions are forbidden ;)","brand":"HP"}
+{"type":"przewody","sku":"cable test 4","kolor":"green","name":[{"locale":"en","name":"Test Cable 4"},{"locale":"de","name":"Tst Kabel 4"}],"desc":"","brand":"HP"}
+{"type":"przewody","sku":"cable test 5","kolor":"blue","name":[{"locale":"en","name":"Test Cable 5"},{"locale":"de","name":"Tst Kabel 5"}],"desc":"Sample description of test cable 5.","brand":"HP"}
+{"type":"","sku":"cable test 6","kolor":"blue","name":[{"locale":"en","name":"Test Cable 6"},{"locale":"de","name":"Tst Kabel 6"}],"desc":"Sample description of test cable 6.","brand":"HP"}
+{"type":"przewody","sku":"cable test 7","kolor":"white","name":[{"locale":"en","name":"Test Cable 7"},{"locale":"de","name":"Tst Kabel 7"}],"desc":"Sample description of test cable 7.","brand":"VGA"}
