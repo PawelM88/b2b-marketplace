@@ -1,5 +1,6 @@
 <?php
 
+use Pyz\Shared\OutboundRequest\OutboundRequestConstants;
 use Generated\Shared\Transfer\AddPaymentMethodTransfer;
 use Generated\Shared\Transfer\AddReviewsTransfer;
 use Generated\Shared\Transfer\AssetAddedTransfer;
@@ -886,3 +887,8 @@ $config[GlueJsonApiConventionConstants::GLUE_DOMAIN] = sprintf(
 );
 
 $config[GlueStorefrontApiApplicationConstants::GLUE_STOREFRONT_CORS_ALLOW_ORIGIN] = getenv('SPRYKER_GLUE_APPLICATION_CORS_ALLOW_ORIGIN') ?: '*';
+
+# URLs and misc. config
+$config[OutboundRequestConstants::OUTBOUND_REQUEST_GET_DATA_URL] = 'https://26c96adf-b4d3-4db2-9924-5333bce298d5.mock.pstmn.io/outboundRequest/test';
+$config[OutboundRequestConstants::OUTBOUND_REQUEST_DEFAULT_METHOD] = 'GET';
+$config[OutboundRequestConstants::OUTBOUND_REQUEST_CONNECT_TIMEOUT] = ['connect_timeout' => 5];

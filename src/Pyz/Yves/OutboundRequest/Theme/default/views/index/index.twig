@@ -1,0 +1,34 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    outboundRequest: _view.outboundRequest
+} %}
+
+{% block content %}
+    <div style="margin-left:auto; margin-right: auto; width:95%">
+        <h1 style="text-align: center;">
+            Outbound Request Content:
+        </h1>
+        {% for outboundRequest in data.outboundRequest %}
+            <h2 style="margin-top: 5%;">
+                Id: {{ outboundRequest.id }}
+            </h2>
+            <h2>
+                VarcharAttribute: {{ outboundRequest.varcharAttribute }}
+            </h2>
+            <h2>
+                IntegerAttribute: {{ outboundRequest.intAttribute }}
+            </h2>
+            {% for objectAttributes in outboundRequest.objectAttribute %}
+                <h2>
+                    ObjectAttribute: {{ objectAttributes }}
+                </h2>
+            {% endfor %}
+            {% for arrayAttributes in outboundRequest.arrayAttribute %}
+                <h2>
+                    ArrayAttribute: {{ arrayAttributes }}
+                </h2>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endblock %}

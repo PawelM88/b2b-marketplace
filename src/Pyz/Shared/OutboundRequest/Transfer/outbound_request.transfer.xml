@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<transfers xmlns="spryker:transfer-01"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+    <transfer name="OutboundRequest">
+        <property name="method" type="string"/>
+        <property name="uri" type="string"/>
+    </transfer>
+
+    <transfer name="OutboundHttpResponse">
+        <property name="statusCode" type="string"/>
+        <property name="body" type="string"/>
+        <property name="successful" type="boolean"/>
+        <property name="jsonObject" type="\stdClass"/>
+        <property name="outboundResponseCollection" type="OutboundResponseCollection"/>
+    </transfer>
+
+    <transfer name="OutboundResponseCollection">
+        <property name="data" type="OutboundResponseCollectionEntity[]"/>
+    </transfer>
+
+    <transfer name="OutboundResponseCollectionEntity">
+        <property name="id" type="int"/>
+        <property name="varcharAttribute" type="string"/>
+        <property name="intAttribute" type="int"/>
+        <property name="objectAttribute" type="\stdClass"/>
+        <property name="arrayAttribute" type="array"/>
+    </transfer>
+</transfers>
