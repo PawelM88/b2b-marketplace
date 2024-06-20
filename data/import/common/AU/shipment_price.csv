@@ -1,0 +1,7 @@
+shipment_method_key,store,currency,value_net,value_gross
+spryker_dummy_shipment-standard,AU,AUD,,390
+spryker_dummy_shipment-express,AU,AUD,,490
+spryker_drone_shipment-air_standard,AU,AUD,,400
+spryker_drone_shipment-air_sonic,AU,AUD,,900
+spryker_drone_shipment-air_light,AU,AUD,,1200
+spryker_no_shipment,AU,AUD,,0

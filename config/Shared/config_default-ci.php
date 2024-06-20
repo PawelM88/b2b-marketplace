@@ -48,14 +48,14 @@ use SprykerShop\Shared\ErrorPage\ErrorPageConstants;
 
 $dynamicStoreEnabled = (bool)getenv('SPRYKER_DYNAMIC_STORE_MODE');
 
-$yvesHost = $dynamicStoreEnabled ? 'www.eu.spryker.test' : 'www.de.spryker.test';
-$glueHost = $dynamicStoreEnabled ? 'glue.eu.spryker.test' : 'glue.de.spryker.test';
-$glueBackendHost = $dynamicStoreEnabled ? 'gluebackend.eu.spryker.test' : 'gluebackend.de.spryker.test';
-$glueStorefrontHost = $dynamicStoreEnabled ? 'gluestorefront.eu.spryker.test' : 'gluestorefront.de.spryker.test';
-$backofficeHost = $dynamicStoreEnabled ? 'backoffice.eu.spryker.test' : 'backoffice.de.spryker.test';
-$merchantPortalHost = $dynamicStoreEnabled ? 'mp.eu.spryker.test' : 'mp.de.spryker.test';
-$backendGatewayHost = $dynamicStoreEnabled ? 'backend-gateway.eu.spryker.test' : 'backend-gateway.de.spryker.test';
-$backendApiHost = $dynamicStoreEnabled ? 'backend-api.eu.spryker.test' : 'backend-api.de.spryker.test';
+$yvesHost = $dynamicStoreEnabled ? 'www.eu.spryker.test' : 'www.au.spryker.test';
+$glueHost = $dynamicStoreEnabled ? 'glue.eu.spryker.test' : 'glue.au.spryker.test';
+$glueBackendHost = $dynamicStoreEnabled ? 'gluebackend.eu.spryker.test' : 'gluebackend.au.spryker.test';
+$glueStorefrontHost = $dynamicStoreEnabled ? 'gluestorefront.eu.spryker.test' : 'gluestorefront.au.spryker.test';
+$backofficeHost = $dynamicStoreEnabled ? 'backoffice.eu.spryker.test' : 'backoffice.au.spryker.test';
+$merchantPortalHost = $dynamicStoreEnabled ? 'mp.eu.spryker.test' : 'mp.au.spryker.test';
+$backendGatewayHost = $dynamicStoreEnabled ? 'backend-gateway.eu.spryker.test' : 'backend-gateway.au.spryker.test';
+$backendApiHost = $dynamicStoreEnabled ? 'backend-api.eu.spryker.test' : 'backend-api.au.spryker.test';
 
 $isTestifyConstantsClassExists = class_exists(TestifyConstants::class);
 
@@ -135,7 +135,7 @@ $config[StorageRedisConstants::STORAGE_REDIS_PASSWORD] = false;
 $config[StorageRedisConstants::STORAGE_REDIS_DATABASE] = 3;
 
 $config[StorageDatabaseConstants::DB_DEBUG] = false;
-$config[StorageDatabaseConstants::DB_DATABASE] = 'DE_test_zed';
+$config[StorageDatabaseConstants::DB_DATABASE] = 'AU_test_zed';
 $config[StorageDatabaseConstants::DB_HOST] = '127.0.0.1';
 $config[StorageDatabaseConstants::DB_PASSWORD] = '';
 // Look also at:

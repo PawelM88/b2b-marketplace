@@ -102,7 +102,7 @@ sections:
             command: 'vendor/bin/console setup:init-db'
 
         import-eu-region-demodata:
-            command: 'vendor/bin/console data:import --config=data/import/local/full_EU.yml'
+            command: 'vendor/bin/console data:import --config=data/import/local/full_${SPRYKER_REGION}.yml'
 
         setup-search-create-sources:
             command: 'vendor/bin/console search:setup:sources'

@@ -26,12 +26,6 @@ class AclConfig extends SprykerAclConfig
             'admin@spryker.com' => [
                 'group' => AclConstants::ROOT_GROUP,
             ],
-            'admin_de@spryker.com' => [
-                'group' => AclConstants::ROOT_GROUP,
-            ],
-            'richard@spryker.com' => [
-                'group' => AclConstants::ROOT_GROUP,
-            ],
             'agent-merchant@spryker.com' => [
                 'group' => AclConstants::ROOT_GROUP,
             ],

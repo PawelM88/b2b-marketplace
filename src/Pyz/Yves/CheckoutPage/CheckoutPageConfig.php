@@ -17,8 +17,7 @@ class CheckoutPageConfig extends SprykerCheckoutPageConfig
     public function getLocalizedTermsAndConditionsPageLinks(): array
     {
         return [
-            'en_US' => '/en/gtc',
-            'de_DE' => '/de/agb',
+            'en_AU' => '/en/gtc',
         ];
     }
 }

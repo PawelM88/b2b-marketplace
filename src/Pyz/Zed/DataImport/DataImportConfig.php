@@ -228,7 +228,7 @@ class DataImportConfig extends SprykerDataImportConfig
      */
     public function getDefaultYamlConfigPath(): ?string
     {
-        $regionDir = defined('APPLICATION_REGION') ? APPLICATION_REGION : 'EU';
+        $regionDir = defined('APPLICATION_REGION') ? APPLICATION_REGION : 'AUSTRALIA';
 
         return APPLICATION_ROOT_DIR . DIRECTORY_SEPARATOR . 'data/import/local/full_' . $regionDir . '.yml';
     }

@@ -25,6 +25,12 @@ actions:
           <<: *default_filter_criteria
           store_name: [US]
 
+    - data_entity: merchant-order-expense
+      destination: 'merchants/{merchant_name}/merchant-orders/{data_entity}s_{store_name}_{timestamp}.csv'
+      filter_criteria:
+          <<: *default_filter_criteria
+          store_name: [AU]
+
     - data_entity: merchant-order-item
       destination: 'merchants/{merchant_name}/merchant-orders/{data_entity}s_{store_name}_{timestamp}.csv'
       filter_criteria:
@@ -37,6 +43,12 @@ actions:
           <<: *default_filter_criteria
           store_name: [US]
 
+    - data_entity: merchant-order-item
+      destination: 'merchants/{merchant_name}/merchant-orders/{data_entity}s_{store_name}_{timestamp}.csv'
+      filter_criteria:
+          <<: *default_filter_criteria
+          store_name: [AU]
+
     - data_entity: merchant-order
       destination: 'merchants/{merchant_name}/merchant-orders/{data_entity}s_{store_name}_{timestamp}.csv'
       filter_criteria:
@@ -48,3 +60,9 @@ actions:
       filter_criteria:
           <<: *default_filter_criteria
           store_name: [US]
+
+    - data_entity: merchant-order
+      destination: 'merchants/{merchant_name}/merchant-orders/{data_entity}s_{store_name}_{timestamp}.csv'
+      filter_criteria:
+          <<: *default_filter_criteria
+          store_name: [AU]

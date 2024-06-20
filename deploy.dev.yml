@@ -10,9 +10,7 @@ image:
         enabled-extensions:
             - blackfire
     environment:
-        SPRYKER_YVES_HOST_DE: yves.de.spryker.local
-        SPRYKER_YVES_HOST_AT: yves.at.spryker.local
-        SPRYKER_YVES_HOST_US: yves.us.spryker.local
+        SPRYKER_YVES_HOST_AU: yves.au.spryker.local
         #AOP
         SPRYKER_AOP_INFRASTRUCTURE: '{
             "SPRYKER_MESSAGE_BROKER_HTTP_SENDER_CONFIG": {},
@@ -42,194 +40,84 @@ assets:
     mode: development
 
 regions:
-    EU:
+    AUSTRALIA:
         services:
             database:
-                database: eu-docker
+                database: au-docker
                 username: spryker
                 password: secret
 
         stores:
-            DE:
+            AU:
                 services:
                     broker:
-                        namespace: de-docker
+                        namespace: au-docker
                     key_value_store:
                         namespace: 1
                     search:
-                        namespace: de_search
-            AT:
-                services:
-                    broker:
-                        namespace: at-docker
-                    key_value_store:
-                        namespace: 2
-                    search:
-                        namespace: at_search
-    US:
-        services:
-            database:
-                database: us-docker
-                username: spryker
-                password: secret
-        stores:
-            US:
-                services:
-                    broker:
-                        namespace: us-docker
-                    key_value_store:
-                        namespace: 3
-                    search:
-                        namespace: us_search
+                        namespace: au_search
 groups:
-    EU:
-        region: EU
+    AUSTRALIA:
+        region: AU
         applications:
-            merchant_portal_eu:
+            merchant_portal_au:
                 application: merchant-portal
                 endpoints:
-                    mp.de.spryker.local:
+                    mp.au.spryker.local:
                         entry-point: MerchantPortal
-                        store: DE
+                        store: AU
                         primal: true
                         services:
                             session:
                                 namespace: 7
-                    mp.at.spryker.local:
-                        entry-point: MerchantPortal
-                        store: AT
-                        services:
-                            session:
-                                namespace: 8
-            yves_eu:
+            yves_au:
                 application: yves
                 endpoints:
                     date-time-configurator-example.spryker.local:
                         entry-point: Configurator
-                    yves.de.spryker.local:
-                        store: DE
+                    yves.au.spryker.local:
+                        store: AU
                         services:
                             session:
                                 namespace: 1
-                    yves.at.spryker.local:
-                        store: AT
-                        services:
-                            session:
-                                namespace: 2
-            glue_eu:
+            glue_au:
                 application: glue
                 endpoints:
-                    glue.de.spryker.local:
-                        store: DE
+                    glue.au.spryker.local:
+                        store: AU
                         cors-allow-origin: '*'
-                    glue.at.spryker.local:
-                        store: AT
-                        cors-allow-origin: '*'
-            glue_storefront_eu:
+            glue_storefront_au:
                 application: glue-storefront
                 endpoints:
-                    glue-storefront.de.spryker.local:
-                        store: DE
+                    glue-storefront.au.spryker.local:
+                        store: AU
                         cors-allow-origin: '*'
-                    glue-storefront.at.spryker.local:
-                        store: AT
-                        cors-allow-origin: '*'
-            glue_backend_eu:
+            glue_backend_au:
                 application: glue-backend
                 endpoints:
-                    glue-backend.de.spryker.local:
-                        store: DE
+                    glue-backend.au.spryker.local:
+                        store: AU
                         cors-allow-origin: '*'
-                    glue-backend.at.spryker.local:
-                        store: AT
-                        cors-allow-origin: '*'
-            backoffice_eu:
+            backoffice_au:
                 application: backoffice
                 endpoints:
                     backoffice.de.spryker.local:
-                        store: DE
+                        store: AU
                         services:
                             session:
                                 namespace: 3
-                    backoffice.at.spryker.local:
-                        store: AT
-                        services:
-                            session:
-                                namespace: 4
-            backend_gateway_eu:
+            backend_gateway_au:
                 application: backend-gateway
                 endpoints:
-                    backend-gateway.de.spryker.local:
-                        store: DE
+                    backend-gateway.au.spryker.local:
+                        store: AU
                         primal: true
-                    backend-gateway.at.spryker.local:
-                        store: AT
-                        primal: true
-            backend_api_eu:
+            backend_api_au:
                 application: zed
                 endpoints:
-                    backend-api.de.spryker.local:
-                        store: DE
+                    backend-api.au.spryker.local:
+                        store: AU
                         entry-point: BackendApi
-                    backend-api.at.spryker.local:
-                        store: AT
-                        entry-point: BackendApi
-    US:
-        region: US
-        applications:
-            merchant_portal_us:
-                application: merchant-portal
-                endpoints:
-                    mp.us.spryker.local:
-                        entry-point: MerchantPortal
-                        store: US
-                        services:
-                            session:
-                                namespace: 9
-            yves_us:
-                application: yves
-                endpoints:
-                    yves.us.spryker.local:
-                        store: US
-                        services:
-                            session:
-                                namespace: 5
-            glue_us:
-                application: glue
-                endpoints:
-                    glue.us.spryker.local:
-                        store: US
-                        cors-allow-origin: '*'
-            glue_storefront_us:
-                application: glue-storefront
-                endpoints:
-                    glue-storefront.us.spryker.local:
-                        store: US
-                        cors-allow-origin: '*'
-            glue_backend_us:
-                application: glue-backend
-                endpoints:
-                    glue-backend.us.spryker.local:
-                        store: US
-                        cors-allow-origin: '*'
-            backoffice_us:
-                application: backoffice
-                endpoints:
-                    backoffice.us.spryker.local:
-                        store: US
-                        services:
-                            session:
-                                namespace: 6
-            backend_gateway_us:
-                application: backend-gateway
-                endpoints:
-                    backend-gateway.us.spryker.local:
-                        store: US
-            backend_api_us:
-                application: zed
-                endpoints:
-                    backend-api.us.spryker.local:
-                        store: US
 services:
     database:
         engine: mysql
@@ -295,7 +183,7 @@ docker:
         redirect: true
 
     testing:
-        store: DE
+        store: AU
 
     debug:
         enabled: true

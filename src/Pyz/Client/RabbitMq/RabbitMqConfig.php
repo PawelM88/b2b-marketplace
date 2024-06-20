@@ -75,7 +75,7 @@ class RabbitMqConfig extends SprykerRabbitMqConfig
      */
     public function getDefaultLocaleCode(): ?string
     {
-        return 'en_US';
+        return 'en_AU';
     }
 
     /**

@@ -24,7 +24,7 @@ class StockConfig extends SprykerStockConfig
             'AT' => [
                 'Warehouse2',
             ],
-            'US' => [
+            'AU' => [
                 'Warehouse2',
             ],
         ];

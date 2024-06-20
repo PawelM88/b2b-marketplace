@@ -183,6 +183,7 @@ $config[CmsGuiConstants::CMS_PAGE_PREVIEW_URI] = '/en/cms/preview/%d';
 
 $config[TranslatorConstants::TRANSLATION_ZED_FALLBACK_LOCALES] = [
     'de_DE' => ['en_US'],
+    'en_AU' => ['en_US'],
 ];
 
 // >>> MONITORING
@@ -581,7 +582,7 @@ $config[SymfonyMailerConstants::SMTP_PASSWORD] = getenv('SPRYKER_SMTP_PASSWORD')
 $config[FileSystemConstants::FILESYSTEM_SERVICE] = [
     'files' => [
         'sprykerAdapterClass' => LocalFilesystemBuilderPlugin::class,
-        'root' => APPLICATION_ROOT_DIR . '/data/DE/media/',
+        'root' => APPLICATION_ROOT_DIR . '/data/AU/media/',
         'path' => 'files/',
     ],
 ];
@@ -655,11 +656,12 @@ $config[ShopUiConstants::YVES_ASSETS_URL_PATTERN] = '/assets/' . (getenv('SPRYKE
 // >>> Availability Notification
 $config[AvailabilityNotificationConstants::BASE_URL_YVES_PORT] = $yvesPort;
 $config[AvailabilityNotificationConstants::STORE_TO_YVES_HOST_MAPPING] = [
-    'DE' => getenv('SPRYKER_YVES_HOST_DE'),
+    'AU' => getenv('SPRYKER_YVES_HOST_AU'),
     'AT' => getenv('SPRYKER_YVES_HOST_AT'),
     'US' => getenv('SPRYKER_YVES_HOST_US'),
 ];
 $config[AvailabilityNotificationConstants::REGION_TO_YVES_HOST_MAPPING] = [
+    'AUSTRALIA' => getenv('SPRYKER_YVES_HOST_AU'),
     'EU' => getenv('SPRYKER_YVES_HOST_EU'),
     'US' => getenv('SPRYKER_YVES_HOST_US'),
 ];

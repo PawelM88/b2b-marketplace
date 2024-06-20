@@ -1,0 +1,7 @@
+store,currency,threshold_type_key,threshold,fee,message_glossary_key
+AU,AUD,hard-minimum-threshold,0,,
+AU,AUD,soft-minimum-threshold,0,,
+AU,AUD,hard-maximum-threshold,1000000,,
+AU,AUD,hard-minimum-threshold,0,,
+AU,AUD,soft-minimum-threshold,0,,
+AU,AUD,hard-maximum-threshold,1000000,,
