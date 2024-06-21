@@ -1,0 +1,35 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% if widget_title is not defined %}
+    {% set widget_title = 'Customers upload' | trans %}
+{% endif %}
+
+{% block head_title -%}
+    {{ widget_title }}
+{%- endblock %}
+
+{% block section_title %}{{ widget_title }}{% endblock %}
+
+{% block action %}
+    {{ parent() }}
+    {{ backActionButton(url('/customer'), 'Back to Customers' | trans) }}
+    {{ backActionButton(url('/customer/import'), 'Back to Customers import' | trans) }}
+{% endblock %}
+
+{% block content %}
+
+    {% embed '@Gui/Partials/widget.twig' with {widget_title: 'Errors found inside your file:' | trans} %}
+
+        {% block widget_content %}
+            {% if errorTable and errorTable.data is not empty %}
+                {% include '@Gui/Table/table.twig' with {table: errorTable, id: 'combined-customer-import'} %}
+            {% else %}
+                <div>
+                    {{ 'Your file does not contain any errors.' | trans }}
+                </div>
+            {% endif %}
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}

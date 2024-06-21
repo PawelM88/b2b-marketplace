@@ -1,0 +1,7 @@
+{% extends '@Spryker:Customer/Index/index.twig' %}
+
+{% block action %}
+	{{ createActionButton('/customer/add', 'Add Customer' | trans) }}
+	{{ createActionButton('/customer/import', 'Import Customers' | trans) }}
+	{{ createActionButton('/customer/download', 'Download as CSV' | trans) }}
+{% endblock %}

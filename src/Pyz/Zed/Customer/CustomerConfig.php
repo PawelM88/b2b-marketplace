@@ -27,6 +27,51 @@ class CustomerConfig extends SprykerCustomerConfig
     protected const MAX_LENGTH_CUSTOMER_PASSWORD = 64;
 
     /**
+     * @var string
+     */
+    public const STATUS_APPROVED = 'approved';
+
+    /**
+     * @var string
+     */
+    public const STATUS_PENDING = 'pending';
+
+    /**
+     * @var string
+     */
+    public const STATUS_DENIED = 'denied';
+
+    /**
+     * @var string
+     */
+    public const PREDEFINED_SALUTATION_MR = 'Mr';
+
+    /**
+     * @var string
+     */
+    public const PREDEFINED_SALUTATION_MRS = 'Mrs';
+
+    /**
+     * @var string
+     */
+    public const PREDEFINED_SALUTATION_MS = 'Ms';
+
+    /**
+     * @var string
+     */
+    public const PREDEFINED_SALUTATION_DR = 'Dr';
+
+    /**
+     * @var string
+     */
+    public const PREDEFINED_GENDER_MALE = 'Male';
+
+    /**
+     * @var string
+     */
+    public const PREDEFINED_GENDER_FEMALE = 'Female';
+
+    /**
      * {@inheritDoc}
      *
      * @return array<string>
@@ -85,12 +130,12 @@ class CustomerConfig extends SprykerCustomerConfig
      *
      * @return array<string>
      */
-    public function getCustomerDetailExternalBlocksUrls()
+    public function getCustomerDetailExternalBlocksUrls(): array
     {
         return [
-            'sales' => '/sales/customer/customer-orders',
-            'notes' => '/customer-note-gui/index/index',
-        ] + parent::getCustomerDetailExternalBlocksUrls();
+                'sales' => '/sales/customer/customer-orders',
+                'notes' => '/customer-note-gui/index/index',
+            ] + parent::getCustomerDetailExternalBlocksUrls();
     }
 
     /**
@@ -111,5 +156,21 @@ class CustomerConfig extends SprykerCustomerConfig
     public function getCustomerSequenceNumberPrefix(): ?string
     {
         return 'customer';
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function getFileMimeTypes(): array
+    {
+        return ['text/csv'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getMaxFileSize(): string
+    {
+        return '50M';
     }
 }

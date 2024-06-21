@@ -41,7 +41,44 @@ class CustomerDependencyProvider extends SprykerCustomerDependencyProvider
     public const FACADE_NEWSLETTER = 'newsletter facade';
 
     /**
+     * @var string
+     */
+    public const CUSTOMER_CSV_IMPORTER_FACADE = 'CUSTOMER_CSV_IMPORTER_FACADE';
+
+    /**
+     * @var string
+     */
+    public const TRANSLATOR_FACADE = 'TRANSLATOR_FACADE';
+
+    /**
+     * @var string
+     */
+    public const COMPANY_FACADE = 'COMPANY_FACADE';
+
+    /**
+     * @var string
+     */
+    public const COMPANY_BUSINESS_UNIT_FACADE = 'COMPANY_BUSINESS_UNIT_FACADE';
+
+    /**
+     * @var string
+     */
+    public const COMPANY_UNIT_ADDRESS_FACADE = 'COMPANY_UNIT_ADDRESS_FACADE';
+
+    /**
+     * @var string
+     */
+    public const CUSTOMER_FACADE = 'CUSTOMER_FACADE';
+
+    /**
+     * @var string
+     */
+    public const COMPANY_USER_FACADE = 'COMPANY_USER_FACADE';
+
+    /**
      * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @throws \Spryker\Service\Container\Exception\FrozenServiceException !
      *
      * @return \Spryker\Zed\Kernel\Container
      */
@@ -50,6 +87,13 @@ class CustomerDependencyProvider extends SprykerCustomerDependencyProvider
         $container = parent::provideCommunicationLayerDependencies($container);
         $container = $this->addFacadeSales($container);
         $container = $this->addFacadeNewsletter($container);
+        $container = $this->addCustomerCsvImporterFacade($container);
+        $container = $this->addTranslatorFacade($container);
+        $container = $this->addCompanyFacade($container);
+        $container = $this->addCompanyBusinessUnitFacade($container);
+        $container = $this->addCompanyUnitAddressFacade($container);
+        $container = $this->addCustomerFacade($container);
+        $container = $this->addCompanyUserFacade($container);
 
         return $container;
     }
@@ -135,5 +179,117 @@ class CustomerDependencyProvider extends SprykerCustomerDependencyProvider
             new CompanyUserCustomerTableActionExpanderPlugin(),
             new BusinessOnBehalfGuiAttachToCompanyButtonCustomerTableActionExpanderPlugin(),
         ];
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @throws \Spryker\Service\Container\Exception\FrozenServiceException !
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addCustomerCsvImporterFacade(Container $container): Container
+    {
+        $container->set(static::CUSTOMER_CSV_IMPORTER_FACADE, function (Container $container) {
+            return $container->getLocator()->customerCsvImport()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @throws \Spryker\Service\Container\Exception\FrozenServiceException !
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addTranslatorFacade(Container $container): Container
+    {
+        $container->set(static::TRANSLATOR_FACADE, function (Container $container) {
+            return $container->getLocator()->translator()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @throws \Spryker\Service\Container\Exception\FrozenServiceException !
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addCompanyFacade(Container $container): Container
+    {
+        $container->set(static::COMPANY_FACADE, function (Container $container) {
+            return $container->getLocator()->company()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @throws \Spryker\Service\Container\Exception\FrozenServiceException !
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addCompanyBusinessUnitFacade(Container $container): Container
+    {
+        $container->set(static::COMPANY_BUSINESS_UNIT_FACADE, function (Container $container) {
+            return $container->getLocator()->companyBusinessUnit()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @throws \Spryker\Service\Container\Exception\FrozenServiceException !
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addCompanyUnitAddressFacade(Container $container): Container
+    {
+        $container->set(static::COMPANY_UNIT_ADDRESS_FACADE, function (Container $container) {
+            return $container->getLocator()->companyUnitAddress()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @throws \Spryker\Service\Container\Exception\FrozenServiceException !
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addCustomerFacade(Container $container): Container
+    {
+        $container->set(static::CUSTOMER_FACADE, function (Container $container) {
+            return $container->getLocator()->customer()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @throws \Spryker\Service\Container\Exception\FrozenServiceException !
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addCompanyUserFacade(Container $container): Container
+    {
+        $container->set(static::COMPANY_USER_FACADE, function (Container $container) {
+            return $container->getLocator()->companyUser()->facade();
+        });
+
+        return $container;
     }
 }

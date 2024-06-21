@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <customer>
+        <label>Customers</label>
+        <title>Customers</title>
+        <icon>fa-users</icon>
+        <uri>#</uri>
+        <visible>1</visible>
+        <pages>
+            <customer>
+                <label>Customers</label>
+                <title>Customers</title>
+                <bundle>customer</bundle>
+                <controller>index</controller>
+                <action>index</action>
+                <visible>1</visible>
+                <pages>
+                    <customer-import>
+                        <label>Customers Import</label>
+                        <title>Customers Import</title>
+                        <bundle>customer</bundle>
+                        <controller>import</controller>
+                        <action>index</action>
+                        <visible>0</visible>
+                        <pages>
+                            <customer-upload>
+                                <label>Customers Upload</label>
+                                <title>Customers Upload</title>
+                                <bundle>customer</bundle>
+                                <controller>import</controller>
+                                <action>upload</action>
+                                <visible>0</visible>
+                            </customer-upload>
+                        </pages>
+                    </customer-import>
+                </pages>
+            </customer>
+        </pages>
+    </customer>
+</config>
