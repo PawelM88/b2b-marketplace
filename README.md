@@ -1,172 +1,91 @@
-# Spryker B2B Marketplace Demo Shop
-[![Build Status](https://github.com/spryker-shop/b2b-demo-marketplace/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/spryker-shop/b2b-demo-marketplace/actions?query=branch:master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/spryker-shop/b2b-demo-marketplace/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/spryker-shop/b2b-demo-marketplace/?branch=master)
-[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.1-8892BF.svg)](https://php.net/)
+# Spryker assets
 
-## Description
+This repository is a collection of my work and learning on Spryker e-commerce. Each branch is a separate asset.
+Documentation is included for almost all assets.
 
-Spryker B2B Marketplace Demo Shop is a collection of Spryker Marketplace B2B-specific features. It suits most projects as a starting point of development and can be used to explore Spryker.
+## Assets in branches
 
-## B2B Marketplace Demo Shop quick start
+### <h3 style="color: #B8860B;">feature/1-Remove_no_file_doc_block</h3>
 
-This section describes how to get started with the B2B Marketplace Demo Shop quickly.
-
-For detailed installation instructions, see [Install Spryker](https://docs.spryker.com/docs/dg/dev/set-up-spryker-locally/install-spryker/install-spryker.html).
-
-### Prerequisites
-
-* [Install Docker prerequisites on MacOS](https://docs.spryker.com/docs/dg/dev/set-up-spryker-locally/install-spryker/install-docker-prerequisites/install-docker-prerequisites-on-macos.html)
-* [Install Docker prerequisites on Linux](https://docs.spryker.com/docs/dg/dev/set-up-spryker-locally/install-spryker/install-docker-prerequisites/install-docker-prerequisites-on-linux.html)
-* [Install Docker prerequisites on Windows](https://docs.spryker.com/docs/dg/dev/set-up-spryker-locally/install-spryker/install-docker-prerequisites/install-docker-prerequisites-on-windows-with-wsl2.html)
-
-Recommended system requirements for MacOS:
-
-|Macbook type	|vCPU	|RAM|
-|---|---|---|
-|15'|	4	|6GB|
-|13'|	2	|4GB|
-
-### Install the B2B Marketplace Demo Shop
-
-1. Create a project folder and navigate into it:
-```bash
-mkdir spryker-b2b-marketplace && cd spryker-b2b-marketplace
-```
-
-2. Clone the B2B Marketplace Demo Shop:
-```bash
-git clone https://github.com/spryker-shop/b2b-demo-marketplace.git ./spryker-b2b-marketplace
-```
-
-3. Clone the Docker SDK:
-```bash
-git clone git@github.com:spryker/docker-sdk.git docker
-```
-
-2. Set up a desired environment:
-* [Set up a development environment](#set-up-a-development-environment)
-* [Set up a production-like environment](#set-up-a-production-like-environment)
-
-#### Set up a development environment
-
-1. Bootstrap the docker setup:
+The asset that contains documentation on how to disable sample rule when using static code analysis
 
 ```bash
-docker/sdk boot deploy.dev.yml
+console code:sniff:style -m ModuleName
 ```
 
-2. If the command you've run in the previous step returned instructions, follow them.
+The disabled rule is `FileDocBlock` in the `phpcs.xml` file
 
-3. Build and start the instance:
-```bash
-docker/sdk up
-```
+### <h3 style="color: #B8860B;">feature/2-Remove_constructor_property_promotion_is_disallowed</h3>
 
-4. Switch to your branch, re-build the application with assets and demo data from the new branch:
+As in `1-Remove_no_file_doc_block` branch, this asset disables the rule. This time it
+is `DisallowConstructorPropertyPromotion`
 
-```bash
-git checkout {your_branch}
-docker/sdk boot -s deploy.dev.yml
-docker/sdk up --build --assets --data
-```
+### <h3 style="color: #1E90FF;">feature/3-Automatic_creation_of_company_roles</h3>
 
-> Depending on your requirements, you can select any combination of the following `up` command attributes. To fetch all the changes from the branch you switch to, we recommend running the command with all of them:
-> - `--build` - update composer, generate transfer objects, etc.
-> - `--assets` - build assets
-> - `--data` - get new demo data
+The asset retrieves data about the company from the `company.csv` file and creates roles with permissions for each
+existing company based on what is included in the `CompanyRoleConfig class`.
 
-You've set up your Spryker B2B Marketplace Demo Shop and can access your applications.
+### <h3 style="color: #1E90FF;">feature/4-Automatic_email_verification</h3>
 
+The asset is turning off the email verification of newly created user. User is set as verified from the start
 
-### Set up a production-like environment
+### <h3 style="color: #1E90FF;">feature/5-Enrich_merchant_with_payment_specific_attributes_per_store</h3>
 
-1. Bootstrap the docker setup:
+The asset that adds a new attribute to merchants. It is imported from a csv file. There is a new tab in the Back Office
+in the merchant creation and editing form.<br>
+Because the task concerns, among others, displaying values by store. There must be several fields on the form to fill
+in - each for a different store. However, Twig has a protection that prevents the same field from being rendered
+multiple times.<br>
+The next necessary step was to place several forms inside one another.
 
-```bash
-docker/sdk boot -s
-```
+### <h3 style="color: #3CB371;">feature/6-Order_details_email_notifications_process</h3>
 
-2. If the command you've run in the previous step returned instructions, follow them.
+The asset is sending emails notification. The user should receive an email: 
+- placing a new order
+- payment confirmation
+- shipping order
+- order cancellation
+- emails content should be customized by Client
+- the email templates can be edited inside the Back office in a CMS Block and are available as HTML and text versions.
 
-3. Build and start the instance:
-```bash
-docker/sdk up
-```
+### <h3 style="color: #3CB371;">feature/7-Build_contact_form</h3>
 
-4. Switch to your branch in one of the following ways:
+As the name suggests, asset creates a contact form which is on every merchant's profile site. Contact form contains `name`, `phone number`, `e-mail`, `subject` and `message box`.
 
-  * Switch to your brunch, re-build the application with assets and demo data from the new branch:
+### <h3 style="color: #F0E68C;">feature/8-CMS_page_content_for_api</h3>
 
-  ```bash
-  git checkout {your_branch}
-  docker/sdk boot -s
-  docker/sdk up --assets --data
-  ```
+The asset is adding 2 more properties (`content` and `metaTitle`.) to the `RestCmsPagesAttributesTransfer` for `cms-pages/{cmPageId}` endpoint. 
 
-  * Light git checkout:
+### <h3 style="color: #F0E68C;">feature/9-Content_items_for_API</h3>
 
-  ```bash
-  git checkout {your_branch}
-  docker/sdk boot -s
+The asset is creating a completely new endpoint, which allows retrieving information about specific content item based on its key.
 
-  docker/sdk up
-  ```
+### <h3 style="color: #B8860B;">feature/10-How_to_implement_molecule_and_widget</h3>
 
-  > Depending on your requirements, you can select any combination of the following `up` command attributes. To fetch all the changes from the branch you switch to, we recommend running the command with all of them:
-  > - `--build` - update composer, generate transfer objects, etc.
-  > - `--assets` - build assets
-  > - `--data` - get new demo data
+Documentation how to implement molecule and widget
 
-5. Reload all the data:
+### <h3 style="color: #1E90FF;">feature/11-Import_middleware_json</h3>
 
-```bash
-docker/sdk clean-data && docker/sdk up && docker/sdk console q:w:s -v -s
-```
+The asset is introducing how to create MiddlewareProcessor for `.json` file.
 
+### <h3 style="color: #1E90FF;">feature/12-Import_middleware_xml</h3>
 
-You've set up your Spryker B2B Marketplace Demo Shop and can access your applications.
+As in `feature/11-Import_middleware_json` branch, but for `xml` file.
 
-## Troubleshooting installation of the B2B Marketplace Demo Shop
+#### <h3 style="color: #3CB371;">feature/13-Request_to_external_system_from_zed_layer</h3>
 
-This section describes the most common issues related to the installation of the B2B Marketplace Demo Shop.
+The asset is connecting with external system and get data from it. URL for external system is in `config_default.php`
 
-For a complete troubleshooting, see [Troubleshooting Spryker installation issues](https://docs.spryker.com/docs/dg/dev/set-up-spryker-locally/troubleshooting-installation/an-error-during-front-end-setup.html).
+### <h3 style="color: #1E90FF;">feature/14-Setup_a_new_default_store</h3>
 
-**when**
+The asset is modify the most important file to create a new store (`Australia`). Please note that not all csv files have been changed. When creating a new store, you need to modify almost all csv files for import data.
 
-You get unexpected application behavior or errors.
+### <h3 style="color: #1E90FF;">feature/15-Company_Business_Unit_import_via_zed_using_csv_file</h3>
 
-**then**
+The asset creates new functionality to import customers from csv file with their connections to companies, company business units, company unit addresses and company users. File is validating and then data is put into tables.
 
-1. Check the state of the directory:
-```bash
-git status
-```
+### <h3 style="color: #1E90FF;">feature/16-Terms_and_conditions_customisation</h3>
 
-2. If there are untracked files (returned in red), and they are not necessary, remove them.
-
-3. Restart file synchronization and rebuild the codebase:
-```bash
-docker/sdk trouble
-docker/sdk boot -s deploy.dev.yml
-docker/sdk up --build --assets
-```
-
-**when**
-You do not see the expected demo data on the Storefront.
-
-**then**
-
-1. Open the [queue broker](http://queue.spryker.local) and wait until all the queues are empty.
-
-2. If the queues are empty, and the issue persists, reload the demo data:
-```bash
-docker/sdk trouble
-docker/sdk boot -s deploy.dev.yml
-docker/sdk up --build --assets --data
-```
-
-
-## Contributing to the repository
-
-For contribution guidelines, see [Code contribution guide](https://docs.spryker.com/docs/dg/dev/code-contribution-guide.html).
+The asset that creates new functionality for terms and conditions. Terms are imported from csv files. When logging in, the user is checked for consent. If they are missing, a form with missing consents appears.
+TODO
+In Back Office it is not possible to create new term and condition, assign a cms page to it and save it in the database. This is a completely separate functionality that needs to be added in a future.
