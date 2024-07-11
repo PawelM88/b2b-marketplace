@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<database xmlns="spryker:schema-01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="zed"
+          xsi:schemaLocation="spryker:schema-01 https://static.spryker.com/schema-01.xsd"
+          namespace="Orm\Zed\Term\Persistence" package="src.Orm.Zed.Term.Persistence">
+
+    <table name="pyz_term" phpName="PyzTerm">
+        <column name="id_term" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
+        <column name="term_key" required="true" type="VARCHAR" size="256"/>
+        <column name="term_name" required="true" type="VARCHAR" size="256"/>
+        <column name="fk_cms_page" required="false" type="INTEGER"/>
+        <column name="created_at" required="true" type="TIMESTAMP"/>
+        <column name="updated_at" required="true" type="TIMESTAMP"/>
+
+        <unique name="pyz_term-unique-key">
+            <unique-column name="term_key"/>
+        </unique>
+
+        <foreign-key name="pyz_term-fk_cms_page" foreignTable="spy_cms_page" phpName="CmsPage" refPhpName="Term">
+            <reference local="fk_cms_page" foreign="id_cms_page"/>
+        </foreign-key>
+    </table>
+
+    <table name="pyz_term_consent" phpName="PyzTermConsent">
+        <column name="id_term_consent" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
+        <column name="fk_term" required="true" type="INTEGER"/>
+        <column name="fk_customer" required="true" type="INTEGER"/>
+        <column name="accepted_at" required="true" type="TIMESTAMP"/>
+
+        <foreign-key name="pyz_term_consent-fk_term" foreignTable="pyz_term" phpName="Term" refPhpName="TermConsent">
+            <reference local="fk_term" foreign="id_term"/>
+        </foreign-key>
+
+        <foreign-key name="pyz_term_consent-fk_customer" foreignTable="spy_customer" phpName="Customer" refPhpName="TermConsent">
+            <reference local="fk_customer" foreign="id_customer"/>
+        </foreign-key>
+    </table>
+
+</database>

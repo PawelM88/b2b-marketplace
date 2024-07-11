@@ -1,0 +1,69 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+	error: _view.error,
+} %}
+
+{% block pageInfo %}
+	<div class="page-info">
+		<div class="container">
+			{% block breadcrumbs %}
+				{% include molecule('breadcrumb') with {
+					data: {
+						steps: [{
+							label: 'customer.term_consent' | trans
+						}],
+					},
+				} only %}
+			{% endblock breadcrumbs %}
+		</div>
+	</div>
+{% endblock pageInfo %}
+
+{% block content %}
+	{% if data.error %}
+		<div class="alert alert-danger">
+			{{ data.error | trans }}
+		</div>
+		<div class="logout-button-container">
+			<form method="post" action="{{ path('logout') }}">
+				<button type="submit" class="button button--big form__action--primary">
+					{{ 'customer.logout' | trans }}
+				</button>
+			</form>
+		</div>
+	{% else %}
+		{% embed organism('section') with {
+			data: {
+				title: 'customer.term_consent.title' | trans,
+				innerClass: 'col col--sm-12 col--md-9 col--lg-8 col--xl-6',
+			},
+			modifiers: ['center', 'last', 'mobile-center'],
+		} only %}
+			{% block inner %}
+				{% include molecule('form') with {
+					class: 'box',
+					data: {
+						form: _view.termConsentForm,
+						shouldRequireMessage: true,
+						submit: {
+							enable: true,
+							class: 'button button--big form__action--primary',
+							text: 'forms.submit.accept_terms' | trans,
+						},
+						attributes: {
+							'target-class-name': 'js-summary__submit-button',
+						},
+					},
+				} only %}
+				{% for child in _view.termConsentForm.children %}
+					<div class="checkbox-container">
+						{% if child.vars.attr.url is defined %}
+							<a href="{{ child.vars.attr.url }}" class="checkbox-link" target="_blank">{{ child.vars.label|trans }}</a>
+						{% endif %}
+					</div>
+				{% endfor %}
+			{% endblock inner %}
+		{% endembed %}
+	{% endif %}
+{% endblock content %}

@@ -1,0 +1,5 @@
+term_key,name,fk_cms_page
+purchase_conditions,Acceptance of purchase conditions,page_7
+marketing_consents,Marketing consents,page_8
+general_provisions,General provisions,page_9
+legal_compliance,Legal compliance,page_10

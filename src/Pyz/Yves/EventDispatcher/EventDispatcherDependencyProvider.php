@@ -7,6 +7,7 @@
 
 namespace Pyz\Yves\EventDispatcher;
 
+use Pyz\Yves\CustomerPage\Plugin\EventDispatcher\TermConsentEventDispatcherPlugin;
 use Spryker\Shared\Http\Plugin\EventDispatcher\ResponseListenerEventDispatcherPlugin;
 use Spryker\Yves\Application\Communication\Plugin\EventDispatcher\HeadersSecurityEventDispatcherPlugin;
 use Spryker\Yves\EventDispatcher\EventDispatcherDependencyProvider as SprykerEventDispatcherDependencyProvider;
@@ -64,6 +65,7 @@ class EventDispatcherDependencyProvider extends SprykerEventDispatcherDependency
             new SecurityBlockerCustomerEventDispatcherPlugin(),
             new SecurityBlockerAgentEventDispatcherPlugin(),
             new EnvironmentInfoHeaderEventDispatcherPlugin(),
+            new TermConsentEventDispatcherPlugin(), #TermConsent feature
         ];
 
         if (class_exists(ProfilerRequestEventDispatcherPlugin::class)) {

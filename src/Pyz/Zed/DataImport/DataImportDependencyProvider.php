@@ -12,6 +12,8 @@ use Pyz\Zed\MerchantProductOfferDataImport\Communication\Plugin\CombinedMerchant
 use Pyz\Zed\PriceProductOfferDataImport\Communication\Plugin\CombinedPriceProductOfferDataImportPlugin;
 use Pyz\Zed\ProductOfferStockDataImport\Communication\Plugin\CombinedProductOfferStockDataImportPlugin;
 use Pyz\Zed\ProductOfferValidityDataImport\Communication\Plugin\CombinedProductOfferValidityDataImportPlugin;
+use Pyz\Zed\TermConsentDataImport\Communication\Plugin\DataImport\TermConsentDataImportPlugin;
+use Pyz\Zed\TermDataImport\Communication\Plugin\DataImport\TermDataImportPlugin;
 use Spryker\Zed\BusinessOnBehalfDataImport\Communication\Plugin\DataImport\BusinessOnBehalfCompanyUserDataImportPlugin;
 use Spryker\Zed\CategoryDataImport\Communication\Plugin\CategoryDataImportPlugin;
 use Spryker\Zed\CategoryDataImport\Communication\Plugin\DataImport\CategoryStoreDataImportPlugin;
@@ -435,6 +437,8 @@ class DataImportDependencyProvider extends SprykerDataImportDependencyProvider
             new CombinedProductOfferValidityDataImportPlugin(),
             new CombinedProductOfferStockDataImportPlugin(),
             new ProductConfigurationDataImportPlugin(),
+            new TermDataImportPlugin(), #TermFeature
+            new TermConsentDataImportPlugin(), #TermConsentFeature
         ];
     }
 

@@ -28,7 +28,19 @@ class CustomerPageDependencyProvider extends SprykerShopCustomerPageDependencyPr
     public const CLIENT_SESSION = 'CLIENT_SESSION';
 
     /**
+     * @var string
+     */
+    public const CLIENT_CMS_STORAGE = 'CLIENT_CMS_STORAGE';
+
+    /**
+     * @var string
+     */
+    public const CLIENT_CMS_STORE = 'CLIENT_CMS_STORE';
+
+    /**
      * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @throws \Spryker\Service\Container\Exception\FrozenServiceException !
      *
      * @return \Spryker\Yves\Kernel\Container
      */
@@ -37,6 +49,8 @@ class CustomerPageDependencyProvider extends SprykerShopCustomerPageDependencyPr
         $container = parent::provideDependencies($container);
 
         $container = $this->addSessionClient($container);
+        $container = $this->addCmsStorageClient($container);
+        $container = $this->addCmsStoreClient($container);
 
         return $container;
     }
@@ -106,12 +120,46 @@ class CustomerPageDependencyProvider extends SprykerShopCustomerPageDependencyPr
     /**
      * @param \Spryker\Yves\Kernel\Container $container
      *
+     * @throws \Spryker\Service\Container\Exception\FrozenServiceException !
+     *
      * @return \Spryker\Yves\Kernel\Container
      */
     protected function addSessionClient(Container $container): Container
     {
         $container->set(static::CLIENT_SESSION, function (Container $container) {
             return $container->getLocator()->session()->client();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @throws \Spryker\Service\Container\Exception\FrozenServiceException !
+     *
+     * @return \Spryker\Yves\Kernel\Container
+     */
+    protected function addCmsStorageClient(Container $container): Container
+    {
+        $container->set(static::CLIENT_CMS_STORAGE, function (Container $container) {
+                return $container->getLocator()->cmsStorage()->client();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @throws \Spryker\Service\Container\Exception\FrozenServiceException !
+     *
+     * @return \Spryker\Yves\Kernel\Container
+     */
+    public function addCmsStoreClient(Container $container): Container
+    {
+        $container->set(static::CLIENT_CMS_STORE, function (Container $container) {
+            return $container->getLocator()->store()->client();
         });
 
         return $container;

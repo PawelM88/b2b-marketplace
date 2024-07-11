@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<transfers xmlns="spryker:transfer-01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+
+    <transfer name="Term">
+        <property name="idTerm" type="int"/>
+        <property name="termKey" type="string"/>
+        <property name="termName" type="string"/>
+        <property name="fkCmsPage" type="int"/>
+        <property name="termUrl" type="string"/>
+        <property name="updatedAt" type="string"/>
+    </transfer>
+
+    <transfer name="TermConsent">
+        <property name="customer" type="Customer"/>
+        <property name="term" type="Term"/>
+        <property name="acceptedAt" type="string"/>
+    </transfer>
+
+    <transfer name="TermCollection">
+        <property name="terms" type="Term[]" singular="term"/>
+        <property name="termConsents" type="TermConsent[]" singular="termConsent"/>
+    </transfer>
+
+    <transfer name="MissingTermCollection">
+        <property name="terms" type="Term[]" singular="term"/>
+    </transfer>
+
+    <transfer name="UpdatedTermCollection">
+        <property name="terms" type="Term[]" singular="term"/>
+    </transfer>
+
+    <transfer name="TermResponse">
+        <property name="customer" type="Customer"/>
+        <property name="termCollection" type="TermCollection"/>
+        <property name="missingTermCollection" type="MissingTermCollection"/>
+        <property name="updatedTermCollection" type="UpdatedTermCollection"/>
+        <property name="isSuccess" type="bool"/>
+        <property name="errorMessage" type="string"/>
+    </transfer>
+
+</transfers>

@@ -12,6 +12,11 @@ use SprykerShop\Yves\CustomerPage\CustomerPageConfig as SprykerCustomerPageConfi
 class CustomerPageConfig extends SprykerCustomerPageConfig
 {
     /**
+     * @var string
+     */
+    public const SESSION_KEY = 'Term Response Transfer';
+
+    /**
      * @var bool
      */
     protected const CUSTOMER_SECURITY_BLOCKER_ENABLED = true;
