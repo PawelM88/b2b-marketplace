@@ -1,0 +1,53 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% if widget_title is not defined %}
+	{% set widget_title = 'Upload Company Business Units' | trans %}
+{% endif %}
+
+{% block head_title -%}
+	{{ widget_title }}
+{%- endblock %}
+
+{% block section_title %}{{ widget_title }}{% endblock %}
+
+{% block action %}
+	{{ backActionButton(url(backCompanyBusinessUnitListButton), 'Back to Company Business Units' | trans) }}
+	{{ backActionButton(url(backCompanyBusinessUnitImportButton), 'Back to Company Business Units Import' | trans) }}
+{% endblock %}
+
+{% block content %}
+	{% if errorTable and errorTable.data is not empty %}
+		{% embed '@Gui/Partials/widget.twig' with {widget_title: 'Errors found inside your file:' | trans} %}
+
+			{% block widget_content %}
+				{% include '@Gui/Table/table.twig' with {table: errorTable, id: 'combined-company-business-unit-import'} %}
+			{% endblock %}
+
+		{% endembed %}
+	{% else %}
+		{% embed '@Gui/Partials/widget.twig' with {widget_title: 'Report from the imported file' | trans} %}
+
+			{% block widget_content %}
+				<div>
+					{{ 'New Company Business Units:' | trans }} {{ importStatistic.newCompanyBusinessUnit }}
+				</div>
+				<div>
+					{{ 'Updated Company Business Units:' | trans }} {{ importStatistic.updatedCompanyBusinessUnit }}
+				</div>
+				<div>
+					{{ 'New Company Unit Addresses:' | trans }} {{ importStatistic.newCompanyUnitAddress }}
+				</div>
+				<div>
+					{{ 'Updated Company Unit Addresses:' | trans }} {{ importStatistic.updatedCompanyUnitAddress }}
+				</div>
+				<div>
+					{{ 'New Admins:' | trans }} {{ importStatistic.newAdmin }}
+				</div>
+				<div>
+					{{ 'Updated Admins:' | trans }} {{ importStatistic.updatedAdmin }}
+				</div>
+			{% endblock %}
+
+		{% endembed %}
+	{% endif %}
+{% endblock %}

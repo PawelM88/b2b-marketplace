@@ -1,0 +1,2 @@
+brandId,brand_Name,brand_markett,brand_is_active,brand_status?,sold_to_id,sold_to_name,ship_to_id,ship_to_name,email,address_id,address1,address2,address3,country_iso2_code,state,city,zip_code,phone,admin_salutation,admin_first_name,admin_last_name,admin_email,admin_phone
+Ottom_ltd,Ottom ltd,DE,true,approved,Ottom_HQ,Ottom HQ,,,ottom_hq@ottom.com,Address-1,Seeburger Str.,270,,DE,,Berlin,10115,4908892450,Mr,Spencor,Hopkin,spencor.hopkin@ottom.com,495-123-45-67
